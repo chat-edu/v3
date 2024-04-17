@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+.editor-content[role="textbox"] {
+    border-width: 0;
+    border-radius: 8px;
+    margin-top: 16px;
+    font-family: 'DM Sans', sans-serif;
+    padding: 0;
+}
+
+._placeholder_13kqw_1035 {
+    padding: 0;
+}
+
+.mdxeditor {
+    width: 100%;
+    max-width: 100%;
+}
+
+.mdxeditor-toolbar {
+    display: none;
+}
+
+.editor-content h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.editor-content h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.editor-content h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.editor-content li {
+    margin-left: 16px;
+}
+
+.editor-content p {
+    margin-bottom: 8px;
+}
+
+div[data-radix-popper-content-wrapper] {
+    z-index: 200000 !important;
+}
