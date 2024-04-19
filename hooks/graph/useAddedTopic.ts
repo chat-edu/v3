@@ -14,7 +14,7 @@ const useAddedTopic = (node: NodeProps<Topic>) => {
 
     const toast = useToast();
 
-    const { setNodes, getEdges } = useReactFlow();
+    const { setNodes, getEdges, setEdges } = useReactFlow();
 
     const [topicName, setTopicName] = useState<string>(node.data.name);
 
@@ -26,12 +26,6 @@ const useAddedTopic = (node: NodeProps<Topic>) => {
         });
 
         if(createdTopic !== null) {
-            setNodes((nodes) =>
-                nodes.map((n) => n.id === node.id
-                    ? {...n, data: {...n.data, name: topicName}, type: NodeTypes.Topic}
-                    : n
-                )
-            );
             let incomingEdges = getEdges().filter((e) => e.target === node.id);
             await Promise.all(incomingEdges.map(async (e) =>
                 createTopicEdge({
@@ -39,6 +33,23 @@ const useAddedTopic = (node: NodeProps<Topic>) => {
                     target_topic_id: createdTopic.id
                 })
             ));
+            setNodes((nodes) =>
+                nodes.map((n) => n.id === node.id
+                    ? {...n, id: createdTopic.id.toString(), data: {
+                        id: createdTopic.id,
+                        name: createdTopic.name,
+                        graphId: createdTopic.graph_id,
+                        text: ""
+                    }, type: NodeTypes.Topic}
+                    : n
+                )
+            );
+            setEdges((edges) =>
+                edges.map((e) => e.target === node.id
+                    ? {...e, target: createdTopic.id.toString()}
+                    : e
+                )
+            );
             toast({
                 title: "Topic Added",
                 status: "success",
