@@ -25,6 +25,12 @@ export const findIncomingTopicEdges = async (topicId: TopicRow["id"]): Promise<T
     return find(query, [topicId]);
 }
 
+// find all edges whose source and target are in an array of topic ids
+export const findTopicEdgesByTopicIds = async (topicIds: TopicRow["id"][]): Promise<TopicEdgeRow[]> => {
+    const query = `SELECT * FROM ${TOPIC_EDGES_TABLE} WHERE source_topic_id = ANY($1) AND target_topic_id = ANY($1);`;
+    return find(query, [topicIds]);
+}
+
 export const findOutgoingTopicEdges = async (topicId: TopicRow["id"]): Promise<TopicEdgeRow[]> => {
     const query = `SELECT * FROM ${TOPIC_EDGES_TABLE} WHERE source_topic_id = $1;`;
     return find(query, [topicId]);

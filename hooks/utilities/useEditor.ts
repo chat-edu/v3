@@ -9,6 +9,8 @@ import {useToast} from "@chakra-ui/react";
 
 const useEditor = (topic: Topic) => {
 
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+
     const toast = useToast();
 
     const [markdown, setMarkdown] = useState<string>(topic.text);
@@ -61,6 +63,7 @@ const useEditor = (topic: Topic) => {
                 status: 'success',
                 duration: 3000
             })
+            setIsEditing(false)
         } else {
             toast({
                 title: 'Error',
@@ -71,6 +74,8 @@ const useEditor = (topic: Topic) => {
     }
 
     return {
+        isEditing,
+        setIsEditing,
         markdown,
         setMarkdown,
         generateContent,

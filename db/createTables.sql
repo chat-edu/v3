@@ -28,3 +28,21 @@ CREATE TABLE TopicEdges (
     FOREIGN KEY (source_topic_id) REFERENCES Topics(id) ON DELETE CASCADE,
     FOREIGN KEY (target_topic_id) REFERENCES Topics(id) ON DELETE CASCADE
 );
+
+CREATE TABLE Tasks (
+    id SERIAL PRIMARY KEY,
+    text TEXT NOT NULL,
+    graph_id INTEGER NOT NULL,
+    creator_id VARCHAR(255) NOT NULL,
+    completed BOOLEAN NOT NULL,
+    FOREIGN KEY (graph_id) REFERENCES Graphs(id) ON DELETE CASCADE,
+    FOREIGN KEY (creator_id) REFERENCES Users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE TaskTopics (
+    task_id INTEGER,
+    topic_id INTEGER,
+    PRIMARY KEY (task_id, topic_id),
+    FOREIGN KEY (task_id) REFERENCES Tasks(id) ON DELETE CASCADE,
+    FOREIGN KEY (topic_id) REFERENCES Topics(id) ON DELETE CASCADE
+);

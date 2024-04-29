@@ -18,25 +18,20 @@ import {
     linkDialogPlugin,
     tablePlugin,
     thematicBreakPlugin,
-    toolbarPlugin,
-    BoldItalicUnderlineToggles,
-    BlockTypeSelect,
-    CreateLink,
-    CodeToggle,
-    InsertCodeBlock,
-    InsertTable, ListsToggle
 } from '@mdxeditor/editor';
 import '@mdxeditor/editor/style.css';
 
-import {Box, Button, Heading, HStack} from "@chakra-ui/react";
+import {Box, Button, HStack} from "@chakra-ui/react";
 
 import {FaWandMagicSparkles} from "react-icons/fa6";
 
-import "@/components/utilities/editor/editorContent.css";
+import Markdown from "@/components/utilities/markdown";
 
 import useEditor from "@/hooks/utilities/useEditor";
+
 import {Topic} from "@/types/graph/Topic";
 
+import "@/components/utilities/editor/editorContent.css";
 
 interface Props {
     topic: Topic;
@@ -45,6 +40,8 @@ interface Props {
 const Editor: React.FC<Props> = ({ topic }) => {
 
     const {
+        isEditing,
+        setIsEditing,
         ref,
         markdown,
         setMarkdown,
@@ -69,48 +66,70 @@ const Editor: React.FC<Props> = ({ topic }) => {
                 <HStack
                     w={'100%'}
                 >
-                    <Button
-                        onClick={generateContent}
-                        colorScheme={'brand'}
-                        variant={'outline'}
-                        leftIcon={<FaWandMagicSparkles />}
-                        isLoading={isGeneratingContent}
-                        flex={1}
-                    >
-                        Generate
-                    </Button>
-                    <Button
-                        onClick={onSave}
-                        colorScheme={'brand'}
-                        isDisabled={markdown === topic.text}
-                        flex={1}
-                    >
-                        Save
-                    </Button>
+                    {
+                        isEditing ? (
+                            <>
+                                <Button
+                                    onClick={generateContent}
+                                    colorScheme={'brand'}
+                                    variant={'outline'}
+                                    leftIcon={<FaWandMagicSparkles />}
+                                    isLoading={isGeneratingContent}
+                                    flex={1}
+                                >
+                                    Generate
+                                </Button>
+                                <Button
+                                    onClick={onSave}
+                                    colorScheme={'brand'}
+                                    isDisabled={markdown === topic.text}
+                                    flex={1}
+                                >
+                                    Save
+                                </Button>
+                            </>
+                        ) : (
+                            <Button
+                                onClick={() => setIsEditing(true)}
+                                colorScheme={'brand'}
+                                flex={1}
+                            >
+                                Edit
+                            </Button>
+                        )
+                    }
                 </HStack>
             </HStack>
-            <MDXEditor
-                markdown={markdown}
-                ref={ref}
-                onChange={setMarkdown}
-                plugins={[
-                    listsPlugin(),
-                    quotePlugin(),
-                    headingsPlugin(),
-                    linkPlugin(),
-                    linkDialogPlugin(),
-                    imagePlugin({ imageUploadHandler: async () => '/sample-image.png' }),
-                    tablePlugin(),
-                    thematicBreakPlugin(),
-                    frontmatterPlugin(),
-                    codeBlockPlugin({ defaultCodeBlockLanguage: 'txt' }),
-                    codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS', txt: 'text', tsx: 'TypeScript', java: "Java", python: "Python" } }),
-                    directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
-                    markdownShortcutPlugin(),
-                ]}
-                contentEditableClassName={'editor-content'}
-                placeholder={'Start writing or generate content...'}
-            />
+            {
+                isEditing ? (
+                    <MDXEditor
+                        markdown={markdown}
+                        ref={ref}
+                        onChange={setMarkdown}
+                        plugins={[
+                            listsPlugin(),
+                            quotePlugin(),
+                            headingsPlugin(),
+                            linkPlugin(),
+                            linkDialogPlugin(),
+                            imagePlugin({ imageUploadHandler: async () => '/sample-image.png' }),
+                            tablePlugin(),
+                            thematicBreakPlugin(),
+                            frontmatterPlugin(),
+                            codeBlockPlugin({ defaultCodeBlockLanguage: 'txt' }),
+                            codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS', txt: 'text', tsx: 'TypeScript', java: "Java", python: "Python" } }),
+                            directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
+                            markdownShortcutPlugin(),
+                        ]}
+                        contentEditableClassName={'editor-content'}
+                        placeholder={'Start writing or generate content...'}
+                    />
+                ) : (
+                    <Markdown>
+                        {topic.text}
+                    </Markdown>
+                )
+            }
         </Box>
     )
 }

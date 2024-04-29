@@ -15,6 +15,11 @@ export const getTopic = async (id: TopicRow["id"]): Promise<TopicRow | null> => 
     return get(query, [id]);
 };
 
+export const getTopicByName = async (name: TopicRow["name"]): Promise<TopicRow | null> => {
+    const query = `SELECT * FROM ${TOPICS_TABLE} WHERE name = $1;`;
+    return get(query, [name]);
+}
+
 export const findTopicsByGraphId = async (ownerId: TopicRow["graph_id"]): Promise<TopicRow[]> => {
     const query = `SELECT * FROM ${TOPICS_TABLE} WHERE graph_id = $1;`;
     return find(query, [ownerId]);

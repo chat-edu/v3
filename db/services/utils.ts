@@ -3,16 +3,15 @@ import {getTopic} from "@/db/services/topics";
 
 import {TopicRow} from "@/db/types/TopicRow";
 
-export const findIncomingTopics = async (topicId: number, topicNames: TopicRow[] = []) => {
+export const findIncomingTopics = async (topicId: number, topics: TopicRow[] = []): Promise<TopicRow[]> => {
     const incomingTopicEdges = await findIncomingTopicEdges(topicId);
     for(const edge of incomingTopicEdges) {
         const topicRow = await getTopic(edge.source_topic_id);
         if(topicRow === null) {
             continue;
         }
-        // add to the front of topicNames
-        topicNames.unshift(topicRow);
-        await findIncomingTopics(edge.source_topic_id, topicNames);
+        topics.unshift(topicRow);
+        await findIncomingTopics(edge.source_topic_id, topics);
     }
-    return topicNames;
+    return topics;
 }

@@ -1,6 +1,8 @@
 import {useEffect} from "react";
 
-import {useEdgesState, useNodesState, Node} from "reactflow";
+import {useToast} from "@chakra-ui/react";
+
+import {useEdgesState, useNodesState, Node, Edge, Connection, addEdge} from "reactflow";
 
 import useGraphTopics from "@/hooks/queries/topics/useGraphTopics";
 import useGraphQuery from "@/hooks/queries/graphs/useGraph";
@@ -8,13 +10,14 @@ import useGraphTopicEdges from "@/hooks/queries/topicEdges/useGraphTopicEdges";
 
 import {layoutGraph} from "@/services/layout";
 import {deleteTopic} from "@/services/topic";
+import {createTopicEdge, deleteTopicEdge} from "@/services/topicEdge";
 
 import {useLayoutDirection} from "@/contexts/LayoutDirectionContext";
 
 import {Graph} from "@/types/graph/Graph";
 import {Topic} from "@/types/graph/Topic";
 import {NodeTypes} from "@/types/graph/NodeTypes";
-import {useToast} from "@chakra-ui/react";
+
 
 const useGraph = (graphId: Graph["id"]) => {
 
@@ -82,16 +85,56 @@ const useGraph = (graphId: Graph["id"]) => {
         }
     }
 
+    const onConnect = async (edge: Edge | Connection) => {
+        if(!edge.source || !edge.target) return;
+        const topicEdgeRow = await createTopicEdge({
+            source_topic_id: parseInt(edge.source),
+            target_topic_id: parseInt(edge.target)
+        });
+        if(topicEdgeRow) {
+            setEdges((eds) => addEdge({
+                ...edge,
+            }, eds));
+            toast({
+                title: "Edge Created",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    }
+
+    const onEdgesDelete = async (edges: Edge[]) => {
+        for(const edge of edges) {
+            const [sourceId, targetId] = [parseInt(edge.source), parseInt(edge.target)];
+            const success = await deleteTopicEdge({
+                source_topic_id: sourceId,
+                target_topic_id: targetId
+            });
+            if(success) {
+                setEdges((edges) => edges.filter(e => e.id !== edge.id));
+                toast({
+                    title: "Edge Deleted",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                });
+            }
+        }
+    }
+
     return {
         graph,
         graphLoading,
         nodes,
         setNodes,
         onNodesChange,
+        onNodesDelete,
         edges,
         setEdges,
         onEdgesChange,
-        onNodesDelete
+        onEdgesDelete,
+        onConnect,
     }
 }
 

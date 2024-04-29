@@ -37,9 +37,11 @@ const Graph: React.FC<Props> = ({ graphId }) => {
         graphLoading,
         nodes,
         onNodesChange,
+        onNodesDelete,
         edges,
         onEdgesChange,
-        onNodesDelete
+        onEdgesDelete,
+        onConnect
     } = useGraph(graphId);
 
     return (
@@ -50,6 +52,8 @@ const Graph: React.FC<Props> = ({ graphId }) => {
                 onNodesDelete={onNodesDelete}
                 edges={edges}
                 onEdgesChange={onEdgesChange}
+                onEdgesDelete={onEdgesDelete}
+                onConnect={onConnect}
                 fitView
                 nodeTypes={nodeTypes}
             >
