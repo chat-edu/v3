@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
                         size='md'
                         color='brand.500'
                     >
-                        Rabbithole
+                        ChatEDU
                     </Heading>
                 </HStack>
             </Link>

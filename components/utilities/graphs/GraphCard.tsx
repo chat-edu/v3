@@ -1,29 +1,38 @@
 import React from 'react';
 
-import {Card, Text} from "@chakra-ui/react";
+import {Card, Text, useDisclosure} from "@chakra-ui/react";
 
 import UsernameText from "@/components/utilities/UsernameText";
+import GraphPreviewModal from "@/components/utilities/graphs/GraphPreviewModal";
 
 import {Graph} from "@/types/graph/Graph";
-import Link from "next/link";
 
 interface Props {
     graph: Graph
 }
 
 const GraphCard: React.FC<Props> = ({ graph }) => {
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     return (
-        <Link
-            href={`/graph/${graph.id}`}
-        >
+        <>
+            <GraphPreviewModal
+                isOpen={isOpen}
+                onClose={onClose}
+                graphId={graph.id}
+            />
             <Card
                 gap={2}
                 w={'100%'}
                 transition={'all 0.2s'}
                 _hover={{
                     cursor: 'pointer',
-                    shadow: 'md'
+                    shadow: 'md',
+                    borderColor: 'brand.500'
                 }}
+                borderWidth={2}
+                onClick={onOpen}
             >
                 <Text
                     fontSize={{
@@ -38,7 +47,7 @@ const GraphCard: React.FC<Props> = ({ graph }) => {
                     id={graph.creatorId}
                 />
             </Card>
-        </Link>
+        </>
     );
 };
 

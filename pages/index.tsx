@@ -9,8 +9,8 @@ const HomePage: NextPage = () => {
     return (
         <>
             <Head>
-                <title>Rabbithole</title>
-                <meta name="description" content="Generative learning for thinkers, dreamers, and visionaries." />
+                <title>ChatEDU</title>
+                <meta name="description" content="A second brain for stucents" />
                 <meta name="viewport" content="width=device-width, height=device-height,  initial-scale=1.0, user-scalable=no, user-scalable=0;" />
                 <link rel="icon" href="/logo.ico" />
             </Head>

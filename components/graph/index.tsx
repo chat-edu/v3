@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Heading, Text, VStack} from "@chakra-ui/react";
+import {Button, Heading, Text, VStack} from "@chakra-ui/react";
 
 import {Background, Controls, NodeTypes, Panel, ReactFlow} from "reactflow";
 
@@ -19,6 +19,8 @@ import {Graph as GraphType} from "@/types/graph/Graph";
 import 'reactflow/dist/style.css';
 import Loading from "@/components/utilities/Loading";
 import UsernameText from "@/components/utilities/UsernameText";
+import Link from "next/link";
+import {ArrowBackIcon} from "@chakra-ui/icons";
 
 const nodeTypes: NodeTypes = {
     [NodeTypesEnum.Topic]: TopicNode,
@@ -68,6 +70,16 @@ const Graph: React.FC<Props> = ({ graphId }) => {
                                 <VStack
                                     alignItems={'flex-start'}
                                 >
+                                    <Link
+                                        href={`/subject/${graph.id}`}
+                                    >
+                                        <Button
+                                            leftIcon={<ArrowBackIcon />}
+                                            variant={'ghost'}
+                                        >
+                                            Back
+                                        </Button>
+                                    </Link>
                                     <Heading>
                                         {graph?.name}
                                     </Heading>

@@ -75,3 +75,6 @@ CREATE TABLE MultipleChoiceQuestions (
     FOREIGN KEY (topic_id) REFERENCES Topics(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
 );
+
+-- delete all tasks with graph id 44
+DELETE FROM Tasks WHERE graph_id = 44;

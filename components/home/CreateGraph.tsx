@@ -18,8 +18,8 @@ const CreateGraph = () => {
             gap={4}
         >
             <TextInput
-                label={"Create Graph"}
-                placeholder={"What do you want to learn?"}
+                label={"Create Subject"}
+                placeholder={"Ex: Algorithms"}
                 value={graphName}
                 onChange={setGraphName}
             />
@@ -29,7 +29,7 @@ const CreateGraph = () => {
                 colorScheme={'brand'}
                 w={'100%'}
             >
-                Create Graph
+                Create Subject
             </Button>
         </Card>
     );

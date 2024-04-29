@@ -10,6 +10,7 @@ import {Topic} from "@/types/graph/Topic";
 import {NodeTypes} from "@/types/graph/NodeTypes";
 import {layoutGraph} from "@/services/layout";
 import {useLayoutDirection} from "@/contexts/LayoutDirectionContext";
+import {nodeHeight, nodeWidth} from "@/components/graph/nodes/BaseNode";
 
 const useGenerateSubtopics = (parentNode: NodeProps<Topic>) => {
 
@@ -70,7 +71,7 @@ const useGenerateSubtopics = (parentNode: NodeProps<Topic>) => {
                 animated: true,
             }))];
 
-            const layout = layoutGraph(newNodes, newEdges, direction);
+            const layout = layoutGraph(newNodes, newEdges, direction, nodeHeight, nodeWidth);
 
             setNodes(layout.nodes);
             setEdges(layout.edges);

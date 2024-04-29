@@ -10,7 +10,7 @@ const SubjectPage = ({ subjectId } : {subjectId: string}) => {
     return (
         <>
             <Head>
-                <title>Subject</title>
+                <title>ChatEDU - Subject</title>
                 <meta name="description" content="Generative learning" />
                 <meta name="viewport" content="width=device-width, height=device-height,  initial-scale=1.0, user-scalable=no, user-scalable=0;" />
                 <link rel="icon" href="/logo.ico" />

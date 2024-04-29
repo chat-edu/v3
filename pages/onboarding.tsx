@@ -12,14 +12,16 @@ const OnboardingPage: NextPage = () => {
     return (
         <>
             <Head>
-                <title>Rabbithole - Onboarding</title>
-                <meta name="description" content="Generative learning for thinkers, dreamers, and visionaries." />
-                <meta name="viewport" content="width=device-width, height=device-height,  initial-scale=1.0, user-scalable=no, user-scalable=0;" />
+                <title>ChatEDU - Onboarding</title>
+                <meta name="description" content="A second brain for stucents"/>
+                <meta name="viewport"
+                      content="width=device-width, height=device-height,  initial-scale=1.0, user-scalable=no, user-scalable=0;"/>
+                <link rel="icon" href="/logo.ico"/>
             </Head>
             <Layout
                 authGate
             >
-                <Onboarding />
+                <Onboarding/>
             </Layout>
         </>
     )

@@ -17,6 +17,7 @@ import {useLayoutDirection} from "@/contexts/LayoutDirectionContext";
 import {Graph} from "@/types/graph/Graph";
 import {Topic} from "@/types/graph/Topic";
 import {NodeTypes} from "@/types/graph/NodeTypes";
+import {nodeHeight, nodeWidth} from "@/components/graph/nodes/BaseNode";
 
 
 const useGraph = (graphId: Graph["id"]) => {
@@ -47,7 +48,9 @@ const useGraph = (graphId: Graph["id"]) => {
                     source: edge.sourceTopicId.toString(),
                     target: edge.targetTopicId.toString()
                 })),
-                direction
+                direction,
+                nodeHeight,
+                nodeWidth
             );
             setNodes(layout.nodes);
             setEdges(layout.edges);
@@ -64,7 +67,7 @@ const useGraph = (graphId: Graph["id"]) => {
             setEdges(newEdges);
             return;
         }
-        const layout = layoutGraph(nodes, newEdges, direction);
+        const layout = layoutGraph(nodes, newEdges, direction, nodeHeight, nodeWidth);
         setNodes(layout.nodes);
         setEdges(layout.edges);
     }, [topicEdges]);

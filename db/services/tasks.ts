@@ -22,12 +22,12 @@ export const findTasksByGraphId = async (graph_id: GraphRow["id"]): Promise<Task
 }
 
 export const findTasksByCreatorId = async (creator_id: TaskRow["creator_id"]): Promise<TaskRow[]> => {
-    const query = `SELECT * FROM ${TASKS_TABLE} WHERE creator_id = $1;`;
+    const query = `SELECT * FROM ${TASKS_TABLE} WHERE creator_id = $1 ORDER BY id DESC;`;
     return find(query, [creator_id]);
 }
 
 export const findTasksByGraphIdAndCreatorId = async (graph_id: GraphRow["id"], creator_id: TaskRow["creator_id"]): Promise<TaskRow[]> => {
-    const query = `SELECT * FROM ${TASKS_TABLE} WHERE graph_id = $1 AND creator_id = $2;`;
+    const query = `SELECT * FROM ${TASKS_TABLE} WHERE graph_id = $1 AND creator_id = $2 ORDER BY id DESC;`;
     return find(query, [graph_id, creator_id]);
 }
 

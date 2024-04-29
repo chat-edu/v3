@@ -3,12 +3,14 @@ import React from 'react';
 import {Task} from "@/types/Task";
 import {Card, HStack, Text} from "@chakra-ui/react";
 import Link from "next/link";
+import TaskSubject from "@/components/task/TaskCard/TaskSubject";
 
 interface Props {
-    task: Task
+    task: Task,
+    showSubject?: boolean
 }
 
-const TaskCard: React.FC<Props> = ({ task }) => {
+const TaskCard: React.FC<Props> = ({ task, showSubject }) => {
     return (
         <Link
             href={`/task/${task.id}`}
@@ -26,6 +28,11 @@ const TaskCard: React.FC<Props> = ({ task }) => {
                     borderColor: 'brand.500'
                 }}
             >
+                {
+                    showSubject && (
+                        <TaskSubject task={task} />
+                    )
+                }
                 <HStack>
                     <Text
                         fontWeight={'semibold'}

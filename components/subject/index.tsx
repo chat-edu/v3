@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Container, Heading, VStack} from "@chakra-ui/react";
+import {Button, Container, Heading, HStack, VStack} from "@chakra-ui/react";
 
 import TaskInput from "@/components/subject/TaskInput";
 
@@ -9,6 +9,7 @@ import useGraph from "@/hooks/queries/graphs/useGraph";
 import Loading from "@/components/utilities/Loading";
 import UserSubjectTasks from "@/components/subject/UserSubjectTasks";
 import useAuth from "@/hooks/useAuth";
+import Link from "next/link";
 
 interface Props {
     subjectId: Graph['id']
@@ -35,9 +36,22 @@ const Subject: React.FC<Props> = ({ subjectId }) => {
                     alignItems={'start'}
                     w={'100%'}
                 >
-                    <Heading>
-                        {graph?.name}
-                    </Heading>
+                    <HStack
+                        w={'100%'}
+                        justifyContent={'space-between'}
+                    >
+                        <Heading>
+                            {graph?.name}
+                        </Heading>
+                        <Link href={`/graph/${subjectId}`}>
+                            <Button
+                                colorScheme={'brand'}
+                                variant={'outline'}
+                            >
+                                View Graph
+                            </Button>
+                        </Link>
+                    </HStack>
                     <TaskInput
                         subjectId={subjectId}
                     />

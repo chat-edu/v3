@@ -20,7 +20,7 @@ const YourGraphs = () => {
             w={'100%'}
         >
             <Heading>
-                Your Graphs
+                Your Subjects
             </Heading>
             <CreateGraph />
             <Loading loading={isLoading}>

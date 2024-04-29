@@ -4,6 +4,7 @@ import {useLayoutDirection} from "@/contexts/LayoutDirectionContext";
 import {layoutGraph} from "@/services/layout";
 import {Topic} from "@/types/graph/Topic";
 import {newTopicId} from "@/services/topic";
+import {nodeHeight, nodeWidth} from "@/components/graph/nodes/BaseNode";
 
 const useAddTopic = (parentNode: NodeProps<Topic>) => {
 
@@ -42,7 +43,7 @@ const useAddTopic = (parentNode: NodeProps<Topic>) => {
                 target: newNodeId.toString(),
             }
         ]
-        const layout = layoutGraph(newNodes, newEdges, direction);
+        const layout = layoutGraph(newNodes, newEdges, direction, nodeHeight, nodeWidth);
         setNodes(layout.nodes);
         setEdges(layout.edges);
     }

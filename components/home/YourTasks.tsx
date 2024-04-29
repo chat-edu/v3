@@ -1,19 +1,19 @@
 import React from 'react';
-import useUserSubjectTasks from "@/hooks/queries/tasks/useUserSubjectTasks";
-import {User} from "@/types/User";
-import {Graph} from "@/types/graph/Graph";
-import {Card, Text, VStack} from "@chakra-ui/react";
+
+import {Card, Heading, VStack} from "@chakra-ui/react";
+
 import Loading from "@/components/utilities/Loading";
 import TaskCard from "@/components/task/TaskCard";
 
-interface Props {
-    userId: User['id'],
-    subjectId: Graph['id']
-}
+import useUserTasks from "@/hooks/queries/tasks/useUserTasks";
+import useAuth from "@/hooks/useAuth";
 
-const UserSubjectTasks: React.FC<Props> = ({ userId, subjectId }) => {
 
-    const { tasks, isLoading } = useUserSubjectTasks(userId, subjectId);
+const YourTasks = () => {
+
+    const { user } = useAuth();
+
+    const { tasks, isLoading } = useUserTasks(user?.id || '');
 
     return (
         <VStack
@@ -21,12 +21,9 @@ const UserSubjectTasks: React.FC<Props> = ({ userId, subjectId }) => {
             spacing={4}
             alignItems={'start'}
         >
-            <Text
-                fontWeight={'bold'}
-                fontSize={'xl'}
-            >
+            <Heading>
                 Your Tasks
-            </Text>
+            </Heading>
             <Loading
                 loading={isLoading}
                 w={'full'}
@@ -43,6 +40,7 @@ const UserSubjectTasks: React.FC<Props> = ({ userId, subjectId }) => {
                             <TaskCard
                                 key={task.id}
                                 task={task}
+                                showSubject
                             />
                         ))
                     )
@@ -52,4 +50,4 @@ const UserSubjectTasks: React.FC<Props> = ({ userId, subjectId }) => {
     );
 };
 
-export default UserSubjectTasks;
+export default YourTasks;

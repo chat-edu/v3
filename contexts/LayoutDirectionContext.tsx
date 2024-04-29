@@ -13,7 +13,7 @@ interface LayoutDirectionContextType {
 }
 
 export const LayoutDirectionContext = createContext<LayoutDirectionContextType>({
-    direction: LayoutDirections.Vertical,
+    direction: LayoutDirections.Horizontal,
     toggleDirection: () => {},
 });
 

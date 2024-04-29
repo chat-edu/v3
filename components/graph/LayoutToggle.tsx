@@ -9,6 +9,7 @@ import {useLayoutDirection} from "@/contexts/LayoutDirectionContext";
 import {layoutGraph} from "@/services/layout";
 
 import {LayoutDirections} from "@/types/graph/GraphLayout";
+import {nodeHeight, nodeWidth} from "@/components/graph/nodes/BaseNode";
 
 const LayoutToggle = () => {
 
@@ -17,7 +18,7 @@ const LayoutToggle = () => {
     const { direction, toggleDirection } = useLayoutDirection();
 
     useEffect(() => {
-        const layout = layoutGraph(getNodes(), getEdges(), direction);
+        const layout = layoutGraph(getNodes(), getEdges(), direction, nodeHeight, nodeWidth);
         setNodes(layout.nodes);
         setEdges(layout.edges);
     }, [direction]);

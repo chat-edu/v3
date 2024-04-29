@@ -1,5 +1,6 @@
 import {GraphRow, GraphRowInput} from "@/db/types/GraphRow";
 import {emitUserGraphsChangedEvent} from "@/events/userGraphsChanged";
+import {User} from "@/types/User";
 
 export const createGraph = async (graph: GraphRowInput) =>
     fetch('/api/graphs', {
@@ -18,3 +19,18 @@ export const createGraph = async (graph: GraphRowInput) =>
                 return null;
             }
         });
+
+export const deleteGraph = async (graphId: GraphRow["id"], creatorId: User["id"]) =>
+    fetch(`/api/graphs/${graphId}`, {
+        method: 'DELETE',
+    })
+        .then(response => response.json())
+        .then(data => {
+            if(data) {
+                emitUserGraphsChangedEvent(creatorId);
+                return data as boolean;
+            } else {
+                return false;
+            }
+        })
+        .catch(() => false);

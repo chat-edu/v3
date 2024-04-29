@@ -1,12 +1,13 @@
 import React from 'react';
 
-import {Button, Card, Heading, Text} from "@chakra-ui/react";
+import {Button, Card, Heading} from "@chakra-ui/react";
+
+import TextInput from "@/components/utilities/forms/TextInput";
 
 import useAuth from "@/hooks/useAuth";
+import useTaskInput from "@/hooks/task/useTaskInput";
 
 import {Graph} from "@/types/graph/Graph";
-import TextInput from "@/components/utilities/forms/TextInput";
-import useTaskInput from "@/hooks/subject/useTaskInput";
 
 interface Props {
     subjectId: Graph['id']

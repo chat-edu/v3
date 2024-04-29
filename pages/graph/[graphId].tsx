@@ -11,12 +11,14 @@ const GraphPage = ({ graphId } : {graphId: string}) => {
     return (
         <>
             <Head>
-                <title>Graph</title>
-                <meta name="description" content="Generative learning" />
-                <meta name="viewport" content="width=device-width, height=device-height,  initial-scale=1.0, user-scalable=no, user-scalable=0;" />
+                <title>ChatEDU - Graph</title>
+                <meta name="description" content="Generative learning"/>
+                <meta name="viewport"
+                      content="width=device-width, height=device-height,  initial-scale=1.0, user-scalable=no, user-scalable=0;"/>
+                <link rel="icon" href="/logo.ico"/>
             </Head>
             <Layout>
-                <Loading
+            <Loading
                     loading={!graphId}
                     h={'100%'}
                 >
