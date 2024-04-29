@@ -34,7 +34,11 @@ const GraphPreviewModal: React.FC<Props> = ({ isOpen, onClose, graphId }) => {
     const { deleteGraph, graph, isLoading, topics, tasks} = useGraphModal(graphId)
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            size={'2xl'}
+        >
             <ModalOverlay />
             <ModalContent>
                 {
