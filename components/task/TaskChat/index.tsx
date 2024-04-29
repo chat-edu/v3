@@ -2,19 +2,12 @@ import React from 'react';
 
 import {Flex} from "@chakra-ui/react";
 
-import InputBox from "@/components/taskChat/InputBox";
-import Messages from "@/components/taskChat/Messages";
+import InputBox from "@/components/task/TaskChat/InputBox";
+import Messages from "@/components/task/TaskChat/Messages";
 
 import useTaskChat from "@/hooks/task/useTaskChat";
-import {Task} from "@/types/Task";
-import {Topic} from "@/types/graph/Topic";
 
-interface Props {
-    task: Task,
-    topics: Topic[]
-}
-
-const TaskChat: React.FC<Props> = ({ task, topics }) => {
+const TaskChat: React.FC = () => {
 
     const {
         input,
@@ -26,8 +19,10 @@ const TaskChat: React.FC<Props> = ({ task, topics }) => {
         onSubmit,
         promptWithCommand,
         setMessageBottomRef,
-        stop
-    } = useTaskChat(task, topics);
+        stop,
+        nextQuestion,
+        skipTopic
+    } = useTaskChat();
 
     return (
         <Flex
@@ -43,6 +38,8 @@ const TaskChat: React.FC<Props> = ({ task, topics }) => {
                 promptWithCommand={promptWithCommand}
                 answerMapping={answerMapping}
                 isLoading={isLoading}
+                skipTopic={skipTopic}
+                nextQuestion={nextQuestion}
             />
             <InputBox
                 value={input}
@@ -54,6 +51,8 @@ const TaskChat: React.FC<Props> = ({ task, topics }) => {
                 handleSubmit={onSubmit}
                 promptWithCommand={promptWithCommand}
                 stop={stop}
+                nextQuestion={nextQuestion}
+                skipTopic={skipTopic}
             />
         </Flex>
     );

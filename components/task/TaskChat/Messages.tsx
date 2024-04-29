@@ -2,9 +2,9 @@ import React from 'react';
 
 import {Message as MessageInterface} from "ai";
 
-import {Box, Flex, Text, VStack} from "@chakra-ui/react";
+import {Box, Flex, VStack} from "@chakra-ui/react";
 
-import Message from "@/components/taskChat/Message";
+import Message from "@/components/task/TaskChat/Message";
 
 import {AnswerStates} from "@/hooks/task/useTaskChat";
 
@@ -14,11 +14,12 @@ interface Props {
     messages: MessageInterface[],
     isLoading: boolean,
     promptWithCommand: (command: Command<any>) => void,
-    answerMapping: { [key: string]: AnswerStates }
+    answerMapping: { [key: string]: AnswerStates },
+    skipTopic: () => void,
+    nextQuestion: () => void,
 }
 
-const Messages: React.FC<Props> = ({ messages, promptWithCommand, answerMapping }) => {
-
+const Messages: React.FC<Props> = ({ messages, promptWithCommand, answerMapping, skipTopic, nextQuestion }) => {
     return (
         <Box
             w={'100%'}
@@ -47,6 +48,8 @@ const Messages: React.FC<Props> = ({ messages, promptWithCommand, answerMapping 
                                 message={message}
                                 promptWithCommand={promptWithCommand}
                                 answerState={answerMapping[message.id]}
+                                skipTopic={skipTopic}
+                                nextQuestion={nextQuestion}
                             />
                         ))
                     }

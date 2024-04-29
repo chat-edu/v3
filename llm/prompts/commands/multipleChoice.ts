@@ -15,13 +15,13 @@ const multipleChoiceResponseFormatting: Stringified<MultipleChoiceQuestion> = {
     }`,
     answer: "string: <A/B/C/D>"
 }
-const multipleChoicePromptContent = 'Please ask me a multiple choice question';
+const multipleChoicePromptContent = (topic: string) => `Ask me a multiple choice question about ${topic} according to the notes in the first system prompt.`
 
-export const multipleChoiceCommand: Command<MultipleChoiceQuestion> = {
+export const multipleChoiceCommand: (topic: string) => Command<MultipleChoiceQuestion> = (topic: string) => ({
     responseTag: ResponseTags.MULTIPLE_CHOICE,
     responseDescription: multipleChoiceResponseDescription,
     responseFormatting: multipleChoiceResponseFormatting,
     promptTag: CommandTags.MULTIPLE_CHOICE,
-    promptContent: multipleChoicePromptContent,
+    promptContent: multipleChoicePromptContent(topic),
     promptType: CommandTypes.MULTIPLE_CHOICE
-}
+})

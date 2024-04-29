@@ -13,34 +13,30 @@ import {BsFillLightbulbFill} from "react-icons/bs";
 // @ts-ignore
 import jsonAutocomplete from "json-autocomplete";
 
-import StudyGuide from "@/components/taskChat/Message/StudyGuide";
-import MultipleChoiceQuestion from "@/components/taskChat/Message/MultipleChoiceQuestion";
-import TextBasedQuestion from "@/components/taskChat/Message/TextBasedQuestion";
-import TextMessage from "@/components/taskChat/Message/TextMessage";
-import QuestionCorrectness from "@/components/taskChat/Message/QuestionCorrectness";
-import ActionPrompt from "@/components/taskChat/Message/ActionPrompt";
-import Hint from "@/components/taskChat/Message/Hint";
+import MultipleChoiceQuestion from "@/components/task/TaskChat/Message/MultipleChoiceQuestion";
+import TextBasedQuestion from "@/components/task/TaskChat/Message/TextBasedQuestion";
+import TextMessage from "@/components/task/TaskChat/Message/TextMessage";
+import QuestionCorrectness from "@/components/task/TaskChat/Message/QuestionCorrectness";
+import ActionPrompt from "@/components/task/TaskChat/Message/ActionPrompt";
+import Hint from "@/components/task/TaskChat/Message/Hint";
 
 import {
-    answerCorrectnessDefaults,
-    applicationQuestionCommand,
     CommandTags,
-    hintCommand,
-    multipleChoiceCommand,
     parseResponse,
     ResponseTags,
-    studyGuideCommand,
-    understandingQuestionCommand
 } from "@/llm/prompts/commands";
 
 import {Command} from "@/types/commands/Command";
-import DontKnow from "@/components/taskChat/Message/DontKnow";
+import DontKnow from "@/components/task/TaskChat/Message/DontKnow";
 import {AnswerStates} from "@/hooks/task/useTaskChat";
+import Decision from "@/components/task/TaskChat/Message/Decision";
 
 interface Props {
     message: MessageInterface,
     promptWithCommand: (command: Command<any>) => void,
-    answerState?: AnswerStates
+    answerState?: AnswerStates,
+    skipTopic: () => void,
+    nextQuestion: () => void,
 }
 
 const getRoleBgColor = (role: string, colorMode: ColorMode) => {
@@ -65,7 +61,7 @@ const getRoleJustifyContent = (role: string) => {
     }
 }
 
-const Message: React.FC<Props> = ({ message, promptWithCommand, answerState }) => {
+const Message: React.FC<Props> = ({ message, promptWithCommand, answerState, skipTopic, nextQuestion }) => {
 
     const { colorMode } = useColorMode();
 
@@ -89,7 +85,7 @@ const Message: React.FC<Props> = ({ message, promptWithCommand, answerState }) =
                 bg={getRoleBgColor(message.role, colorMode)}
             >
                 {
-                    getMessageComponent(message, promptWithCommand, answerState !== undefined)
+                    getMessageComponent(message, promptWithCommand, skipTopic, nextQuestion, answerState !== undefined)
                 }
             </Card>
         </Flex>
@@ -99,6 +95,8 @@ const Message: React.FC<Props> = ({ message, promptWithCommand, answerState }) =
 const getMessageComponent = (
     message: MessageInterface,
     promptWithCommand: (command: Command<any>) => void,
+    skipTopic: () => void,
+    nextQuestion: () => void,
     answered: boolean
 ) => {
     let tag: string;
@@ -117,16 +115,10 @@ const getMessageComponent = (
     }
     if(!content) return null;
     switch (tag) {
-        case ResponseTags.STUDY_GUIDE:
-            return (
-                <StudyGuide
-                    studyGuide={parseResponse(studyGuideCommand, content)}
-                />
-            );
         case ResponseTags.MULTIPLE_CHOICE:
             return (
                 <MultipleChoiceQuestion
-                    question={parseResponse(multipleChoiceCommand, content)}
+                    question={parseResponse(content)}
                     promptWithCommand={promptWithCommand}
                     answered={answered}
                 />
@@ -134,7 +126,7 @@ const getMessageComponent = (
         case ResponseTags.UNDERSTANDING:
             return (
                 <TextBasedQuestion
-                    textBasedQuestion={parseResponse(understandingQuestionCommand, content)}
+                    textBasedQuestion={parseResponse(content)}
                     promptWithCommand={promptWithCommand}
                     answered={answered}
                 />
@@ -142,7 +134,7 @@ const getMessageComponent = (
         case ResponseTags.APPLICATION:
             return (
                 <TextBasedQuestion
-                    textBasedQuestion={parseResponse(applicationQuestionCommand, content)}
+                    textBasedQuestion={parseResponse(content)}
                     promptWithCommand={promptWithCommand}
                     answered={answered}
                 />
@@ -150,13 +142,13 @@ const getMessageComponent = (
         case ResponseTags.ANSWER_CORRECTNESS:
             return (
                 <QuestionCorrectness
-                    correctness={parseResponse(answerCorrectnessDefaults, content)}
+                    correctness={parseResponse(content)}
                 />
             );
         case ResponseTags.HINT:
             return (
                 <Hint
-                    hint={parseResponse(hintCommand, content)}
+                    hint={parseResponse(content)}
                 />
             );
         case ResponseTags.DONT_KNOW:
@@ -218,12 +210,6 @@ const getMessageComponent = (
                 />
             )
     }
-}
-
-const parseResponseJson = (response: string) => {
-    const jsonStart = response.indexOf('{');
-    const jsonEnd = response.lastIndexOf('}');
-    return JSON.parse(response.substring(jsonStart, jsonEnd + 1));
 }
 
 

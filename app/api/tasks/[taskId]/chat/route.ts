@@ -1,34 +1,34 @@
-import {GoogleGenerativeAIStream, Message, StreamingTextResponse} from 'ai';
-import gemini from "@/llm/gemini";
-import {GenerateContentRequest} from "@google/generative-ai";
+import {OpenAIStream, StreamingTextResponse} from 'ai';
+
+import openai, {model} from "@/llm/openai";
 
 export const runtime = 'edge';
 
-// convert messages from the Vercel AI SDK Format to the format
-// that is expected by the Google GenAI SDK
-const buildGoogleGenAIPrompt = (messages: Message[], systemInstruction: string): GenerateContentRequest => ({
-    contents: messages
-        .filter(message => message.role === 'user' || message.role === 'assistant')
-        .map(message => ({
-            role: message.role === 'user' ? 'user' : 'model',
-            parts: [{ text: message.content }],
-        })),
-    systemInstruction: {
-        role: 'model',
-        parts: [{ text: systemInstruction }],
-    },
-});
-
 export async function POST(req: Request) {
-    // Extract the `prompt` from the body of the request
-    const { messages, systemInstruction } = await req.json();
+    const { messages } = await req.json();
 
-    const geminiStream = await gemini
-        .generateContentStream(buildGoogleGenAIPrompt(messages, systemInstruction));
+    let stream = OpenAIStream(await openai.chat.completions.create({
+        model,
+        response_format: {
+            type: 'json_object'
+        },
+        stream: true,
+        messages: messages,
+    }));
 
-    // Convert the response into a friendly text-stream
-    const stream = GoogleGenerativeAIStream(geminiStream);
+    return new StreamingTextResponse(
+        stream, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            }
+        }
+    );
+}
 
-    // Respond with the stream
-    return new StreamingTextResponse(stream);
+export async function OPTIONS() {
+    return new Response(null, {
+        status: 204,
+    })
 }

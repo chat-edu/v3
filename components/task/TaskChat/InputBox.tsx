@@ -1,13 +1,10 @@
 import React, {ChangeEventHandler} from 'react';
 
 import {
-    Box,
     Button,
     Card,
-    CircularProgress,
     Flex,
     FormControl,
-    FormLabel,
     HStack,
     IconButton,
     Text,
@@ -21,6 +18,7 @@ import {FaStopCircle} from "react-icons/fa";
 import {AnswerStates} from "@/hooks/task/useTaskChat";
 
 import {Command, CommandTypes} from "@/types/commands/Command";
+import {useTaskContext} from "@/contexts/TaskContext";
 
 interface Props {
     value: string,
@@ -32,14 +30,17 @@ interface Props {
     promptType: CommandTypes
     showMessage: boolean;
     answerMapping: { [key: string]: AnswerStates };
+    nextQuestion: () => void;
+    skipTopic: () => void;
 }
 
-const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, handleSubmit, promptWithCommand, promptType, showMessage, answerMapping }) => {
+const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, handleSubmit, nextQuestion, skipTopic, promptType  }) => {
+
+    const { taskTopics, currentTopicIndex, correctAnswersByTopic } = useTaskContext();
 
     const inputBoxColor = useColorModeValue("white", "#2D2D2D");
 
-    const numCorrect = Object.values(answerMapping).filter(state => state === AnswerStates.CORRECT).length;
-    const numAnswered = Object.values(answerMapping).filter(state => state !== AnswerStates.DONT_KNOW).length;
+    const numCorrect = correctAnswersByTopic[currentTopicIndex];
 
     return (
         <Flex
@@ -60,7 +61,23 @@ const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, handl
                     md: 'md'
                 }}
                 roundedTop={'md'}
+                gap={2}
             >
+                <Text
+                    fontSize={'lg'}
+                    fontWeight={'bold'}
+                >
+                    Current Topic: {taskTopics[currentTopicIndex].name} ({numCorrect}/3)
+                </Text>
+                <Text>
+                    {
+                        promptType === CommandTypes.TEXT_BASED
+                            ? 'Answer the question below.'
+                            : promptType === CommandTypes.MULTIPLE_CHOICE
+                                ? 'Choose your answer above.'
+                                : 'Proceed by asking a question, testing your knowledge, or skipping to the next topic.'
+                    }
+                </Text>
                 <form
                     onSubmit={handleSubmit}
                     style={{
@@ -76,37 +93,9 @@ const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, handl
                     <HStack
                         align={'flex-end'}
                     >
-                        {
-                            numAnswered > 0 && (
-                                <Box
-                                    position={'relative'}
-                                    boxSize={'60px'}
-                                >
-                                    <CircularProgress
-                                        color={'brand.500'}
-                                        value={numCorrect}
-                                        max={numAnswered}
-                                        size={'60px'}
-                                    />
-                                    <Text
-                                        position={'absolute'}
-                                        top={'50%'}
-                                        left={'50%'}
-                                        transform={'translate(-50%, -50%)'}
-                                        fontSize={'xs'}
-                                        fontWeight={'bold'}
-                                    >
-                                        {Math.ceil(numCorrect / numAnswered * 100)}%
-                                    </Text>
-                                </Box>
-                            )
-                        }
                         <FormControl
                             flex={1}
                         >
-                            <FormLabel>
-                                {promptType === CommandTypes.TEXT_BASED ? 'Answer' : 'Ask ChatEDU'}
-                            </FormLabel>
                             <Textarea
                                 value={value}
                                 onChange={handleChange}
@@ -118,6 +107,7 @@ const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, handl
                                     base: 'sm',
                                     md: 'md'
                                 }}
+                                placeholder={promptType === CommandTypes.TEXT_BASED ? 'Type your answer...' : 'Ask a question...'}
                             />
                         </FormControl>
                         <Button
@@ -152,6 +142,27 @@ const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, handl
                         }
                     </HStack>
                 </form>
+                <HStack
+                    w={'100%'}
+                    spacing={4}
+                >
+                    <Button
+                        flex={1}
+                        onClick={nextQuestion}
+                        colorScheme={'brand'}
+                        isDisabled={promptType !== CommandTypes.REGULAR || isLoading}
+                    >
+                        Next Question
+                    </Button>
+                    <Button
+                        flex={1}
+                        onClick={skipTopic}
+                        variant={'outline'}
+                        isDisabled={promptType !== CommandTypes.REGULAR || isLoading}
+                    >
+                        Skip Topic
+                    </Button>
+                </HStack>
             </Card>
         </Flex>
     );

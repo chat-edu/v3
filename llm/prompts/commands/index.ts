@@ -1,7 +1,6 @@
 export * from "@/llm/prompts/commands/answerCorrectness";
 export * from "@/llm/prompts/commands/hint";
 export * from "@/llm/prompts/commands/multipleChoice";
-export * from "@/llm/prompts/commands/studyGuide";
 export * from "@/llm/prompts/commands/understanding";
 export * from "@/llm/prompts/commands/application";
 export * from "@/llm/prompts/commands/plainText";

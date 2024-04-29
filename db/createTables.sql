@@ -46,3 +46,32 @@ CREATE TABLE TaskTopics (
     FOREIGN KEY (task_id) REFERENCES Tasks(id) ON DELETE CASCADE,
     FOREIGN KEY (topic_id) REFERENCES Topics(id) ON DELETE CASCADE
 );
+
+CREATE TABLE FreeResponseQuestions (
+    id SERIAL PRIMARY KEY,
+    topic_id INT,
+    question TEXT NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    answer TEXT,
+    correct BOOLEAN,
+    explanation TEXT,
+    FOREIGN KEY (topic_id) REFERENCES Topics(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE MultipleChoiceQuestions (
+    id SERIAL PRIMARY KEY,
+    topic_id INT,
+    question TEXT NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    option_a TEXT,
+    option_b TEXT,
+    option_c TEXT,
+    option_d TEXT,
+    correct_answer CHAR(1) CHECK(correct_answer IN ('A', 'B', 'C', 'D')),
+    answer CHAR(1),
+    explanation TEXT,
+    correct BOOLEAN,
+    FOREIGN KEY (topic_id) REFERENCES Topics(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+);

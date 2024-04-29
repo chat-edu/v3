@@ -1,0 +1,14 @@
+import {Task} from "@/types/Task";
+import {Topic} from "@/types/graph/Topic";
+
+export const topicSystemMessage = (task: Task, topic: Topic) => `
+You are now going to ask questions specifically about the topic: ${topic.name}
+
+The notes for this topic are as follows:
+
+${topic.text}
+
+The user's eventual goal is to complete the following task: ${task.text}
+
+You should not give away information to the task or ask questions specifically about it yet, but the questions should lead the user to the task.
+`

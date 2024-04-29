@@ -7,13 +7,13 @@ export const understandingResponseDescription = 'Text-based understanding questi
 const responseFormatting: Stringified<TextBasedQuestion> = {
     question: 'string: <question>?'
 };
-const promptContent = `Please ask me an understanding question`;
+const promptContent = (topic: string) => `Please ask me an understanding question about`;
 
-export const understandingQuestionCommand: Command<TextBasedQuestion> = {
+export const understandingQuestionCommand: (topic: string) => Command<TextBasedQuestion> = (topic: string) => ({
     responseTag: ResponseTags.UNDERSTANDING,
     responseDescription: understandingResponseDescription,
     responseFormatting,
     promptTag: CommandTags.UNDERSTANDING,
-    promptContent,
+    promptContent: promptContent(topic),
     promptType: CommandTypes.TEXT_BASED
-}
+})

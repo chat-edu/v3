@@ -1,16 +1,23 @@
-import {FormEvent, useEffect, useMemo, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 
 import {Message, nanoid} from "ai";
 import {useChat} from "ai/react";
 
-import {taskIntroductionMessage} from "@/llm/prompts/tasks/taskIntroduction";
+import {useTaskContext} from "@/contexts/TaskContext";
+
 import {questionResponseTagSuffix, ResponseTags} from "@/llm/prompts/commands/tags";
-import {answerCorrectnessCommand, getPrompt, plainTextCommand} from "@/llm/prompts/commands";
+import {
+    answerCorrectnessCommand, applicationQuestionCommand,
+    getPrePrompt,
+    getPrompt,
+    multipleChoiceCommand,
+    plainTextCommand, understandingQuestionCommand
+} from "@/llm/prompts/commands";
 import {taskSystemMessage} from "@/llm/prompts/tasks/systemMessage";
+import {agentIntroduction} from "@/llm/prompts/tasks/agentIntroduction";
+import {topicSystemMessage} from "@/llm/prompts/tasks/topicSystemMessage";
 
 import {Command, CommandTypes} from "@/types/commands/Command";
-import {Topic} from "@/types/graph/Topic";
-import {Task} from "@/types/Task";
 
 export enum AnswerStates {
     CORRECT,
@@ -18,7 +25,16 @@ export enum AnswerStates {
     DONT_KNOW
 }
 
-const useChatEdu = (task: Task, topics: Topic[]) => {
+const useTaskChat = () => {
+
+    const {
+        currentTopicIndex,
+        setCurrentTopicIndex,
+        correctAnswersByTopic,
+        setCorrectAnswersByTopic,
+        task,
+        taskTopics,
+    } = useTaskContext()
 
     const [promptType, setPromptType] = useState<CommandTypes>(CommandTypes.REGULAR);
 
@@ -41,14 +57,11 @@ const useChatEdu = (task: Task, topics: Topic[]) => {
                 [currentQuestion?.id || ""]: correct ? AnswerStates.CORRECT : AnswerStates.INCORRECT
             })
             setCurrentQuestion(null);
-            await append({
-                id: nanoid(),
-                content: JSON.stringify({
-                    tag: ResponseTags.SYSTEM,
-                    content: "Ask me another question"
-                }),
-                role: 'user',
-            })
+            setCorrectAnswersByTopic([
+                ...correctAnswersByTopic.slice(0, currentTopicIndex),
+                correct ? correctAnswersByTopic[currentTopicIndex] + 1 : 0,
+                ...correctAnswersByTopic.slice(currentTopicIndex + 1)
+            ])
         }
         // If the message is an "I don't know" response, set the answer mapping
         else if(message.content.includes(ResponseTags.DONT_KNOW)) {
@@ -57,20 +70,18 @@ const useChatEdu = (task: Task, topics: Topic[]) => {
                 [currentQuestion?.id || ""]: AnswerStates.DONT_KNOW
             })
             setCurrentQuestion(null);
+            setCorrectAnswersByTopic([
+                ...correctAnswersByTopic.slice(0, currentTopicIndex),
+                0,
+                ...correctAnswersByTopic.slice(currentTopicIndex + 1)
+            ])
         }
         scrollToBottom();
     }
 
-    const scrollToBottom = () => {
-        if (!messageBottomRef) return;
-        messageBottomRef.scroll({
-            top: messageBottomRef.scrollHeight,
-            behavior: 'auto'
-        })
-    }
-
     const {
         messages,
+        setMessages,
         input,
         setInput,
         handleInputChange,
@@ -80,28 +91,87 @@ const useChatEdu = (task: Task, topics: Topic[]) => {
     } = useChat({
         api: `/api/tasks/${task.id}/chat`,
         body: {
-            systemInstruction: taskSystemMessage(task, topics),
+            systemInstruction: taskSystemMessage(task, taskTopics),
         },
         onFinish,
     });
 
     useEffect(() => {
-        scrollToBottom();
-    }, [messages])
-
-    useEffect(() => {
+        setMessages([
+            {
+                id: nanoid(),
+                content: taskSystemMessage(task, taskTopics),
+                role: 'system',
+            },
+            {
+                id: nanoid(),
+                content: JSON.stringify({
+                    tag: ResponseTags.PLAIN_TEXT,
+                    content: agentIntroduction(task, taskTopics)
+                }),
+                role: 'assistant',
+            },
+            {
+                id: nanoid(),
+                content: topicSystemMessage(task, taskTopics[currentTopicIndex]),
+                role: 'system',
+            }
+        ])
         setCurrentQuestion(null);
         setAnswerMapping({});
-        setPromptType(CommandTypes.REGULAR)
-        append({
-            id: nanoid(),
-            content: JSON.stringify({
-                tag: ResponseTags.SYSTEM,
-                content: taskIntroductionMessage(task, topics)
-            }),
-            role: 'user',
-        })
+        setPromptType(CommandTypes.REGULAR);
+        setCorrectAnswersByTopic([0]);
     }, [task]);
+
+    useEffect(() => {
+        if(correctAnswersByTopic.length === 0) return;
+        if(correctAnswersByTopic[currentTopicIndex] === 3) {
+            setCurrentTopicIndex(currentTopicIndex + 1);
+        }
+    }, [correctAnswersByTopic]);
+
+    const nextQuestion = async () => {
+        switch (correctAnswersByTopic[currentTopicIndex]) {
+            case 0:
+                await promptWithCommand(multipleChoiceCommand(taskTopics[currentTopicIndex].name));
+                break;
+            case 1:
+                await promptWithCommand(understandingQuestionCommand(taskTopics[currentTopicIndex].name));
+                break;
+            case 2:
+                await promptWithCommand(applicationQuestionCommand(taskTopics[currentTopicIndex].name));
+                break;
+        }
+    }
+
+    const skipTopic = async () => {
+        setCurrentTopicIndex(currentTopicIndex + 1);
+    }
+
+    useEffect(() => {
+        if(currentTopicIndex === 0 || currentTopicIndex === taskTopics.length) return;
+        setMessages([
+            ...messages,
+            {
+                role: 'system',
+                id: nanoid(),
+                content: topicSystemMessage(task, taskTopics[currentTopicIndex])
+            }
+        ]);
+        setCorrectAnswersByTopic([...correctAnswersByTopic, 0]);
+    }, [currentTopicIndex]);
+
+    const scrollToBottom = () => {
+        if (!messageBottomRef) return;
+        messageBottomRef.scroll({
+            top: messageBottomRef.scrollHeight,
+            behavior: 'auto'
+        })
+    }
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages])
 
     const promptWithCommand = async (command: Command<any>) => {
         if(command.promptType === CommandTypes.DONT_KNOW) {
@@ -110,6 +180,14 @@ const useChatEdu = (task: Task, topics: Topic[]) => {
         } else if(command.promptType !== CommandTypes.HINT) {
             setPromptType(command.promptType);
         }
+        setMessages([
+            ...messages,
+            {
+                id: nanoid(),
+                content: getPrePrompt(command),
+                role: 'system',
+            }
+        ])
         await append({
             id: nanoid(),
             content: JSON.stringify(getPrompt(command)),
@@ -123,24 +201,11 @@ const useChatEdu = (task: Task, topics: Topic[]) => {
             ? answerCorrectnessCommand(currentQuestion?.content || "", input)
             : plainTextCommand(input));
         setInput('');
+        setPromptType(CommandTypes.REGULAR);
     }
 
-    const displayMessages = useMemo(() => {
-        // trim the content of the messages from the first { to the last }
-        // if the first { does not exist, return an empty string
-        return messages.map((message) => {
-            const firstBracketIndex = message.content.indexOf('{');
-            const lastBracketIndex = message.content.lastIndexOf('}');
-            if(firstBracketIndex !== -1) {
-                if(lastBracketIndex !== -1) message.content = message.content.substring(firstBracketIndex, lastBracketIndex + 1);
-                else message.content = message.content.substring(firstBracketIndex);
-            }
-            return message;
-        }).filter((message) => (message.role !== 'system' && !message.content.includes(ResponseTags.SYSTEM)));
-    }, [messages]);
-
     return {
-        messages: displayMessages,
+        messages: messages.filter((message) => (message.role !== 'system')),
         input,
         promptType,
         answerMapping,
@@ -149,8 +214,10 @@ const useChatEdu = (task: Task, topics: Topic[]) => {
         onSubmit,
         promptWithCommand,
         setMessageBottomRef,
-        stop
+        stop,
+        nextQuestion,
+        skipTopic
     };
 }
 
-export default useChatEdu;
+export default useTaskChat;

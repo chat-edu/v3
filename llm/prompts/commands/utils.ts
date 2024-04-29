@@ -28,7 +28,6 @@ export const getPrompt = (prompt: Command<any>): JsonCommand => {
 }
 
 export const parseResponse = <ResponseType>(
-    prompt: Command<ResponseType>,
     content: object,
 ): ResponseType => {
     return content as ResponseType;

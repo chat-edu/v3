@@ -9,11 +9,11 @@ const responseFormatting: Stringified<TextBasedQuestion> = {
 };
 const promptContent = `Please ask me an application question`;
 
-export const applicationQuestionCommand: Command<TextBasedQuestion> = {
+export const applicationQuestionCommand: (topic: string) => Command<TextBasedQuestion> = (topic: string) => ({
     responseTag: ResponseTags.APPLICATION,
     responseDescription,
     responseFormatting,
     promptTag: CommandTags.APPLICATION,
     promptContent,
     promptType: CommandTypes.TEXT_BASED
-}
+})

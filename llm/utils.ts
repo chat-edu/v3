@@ -1,21 +1,20 @@
-import gemini from "@/llm/gemini";
-import {GoogleGenerativeAIStream, StreamingTextResponse} from "ai";
+import openai, {model} from "@/llm/openai";
 
 export const generate = async (prompt: string) => {
-    const generateContentResult = await gemini.generateContent(prompt);
-    return generateContentResult.response.text();
-}
-
-const parseResponseJson = (response: string) => {
-    const jsonStart = response.indexOf('{');
-    const jsonEnd = response.lastIndexOf('}');
-    return JSON.parse(response.substring(jsonStart, jsonEnd + 1));
+    const chatCompletion = await openai.chat.completions.create({
+        model,
+        messages: [{role: 'user', content: prompt}]
+    });
+    return chatCompletion.choices[0].message.content;
 }
 
 export const generateJson = async <ResponseType>(prompt: string): Promise<ResponseType> => {
-    try {
-        return parseResponseJson(await generate(prompt));
-    } catch (e) {
-        return generateJson(prompt)
-    }
+    const chatCompletion = await openai.chat.completions.create({
+        model,
+        messages: [{role: 'user', content: prompt}],
+        response_format: {
+            type: 'json_object'
+        }
+    });
+    return JSON.parse(chatCompletion.choices[0].message.content as string) as ResponseType;
 }

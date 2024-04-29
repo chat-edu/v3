@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Box, HStack} from "@chakra-ui/react";
 
-import Markdown from "@/components/utilities/markdown";import QuestionButtons from "@/components/taskChat/Message/QuestionButtons";
+import Markdown from "@/components/utilities/markdown";import QuestionButtons from "@/components/task/TaskChat/Message/QuestionButtons";
 
 import {TextBasedQuestion as TextBasedQuestionType} from "@/types/commands/TextBasedQuestion";
 import {Command} from "@/types/commands/Command";

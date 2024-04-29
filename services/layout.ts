@@ -1,11 +1,14 @@
 import dagre from "dagre";
 
-import {nodeHeight, nodeWidth} from "@/components/graph/nodes/BaseNode";
+import {
+    nodeHeight as defaultNodeHeight,
+    nodeWidth as defaultNodeWidth
+} from "@/components/graph/nodes/BaseNode";
 
 import {Edge, Node, Position} from "reactflow";
 import {LayoutDirections} from "@/types/graph/GraphLayout";
 
-export const layoutGraph = (nodes: Node[], edges: Edge[], direction: LayoutDirections) => {
+export const layoutGraph = (nodes: Node[], edges: Edge[], direction: LayoutDirections, nodeHeight?: number, nodeWidth?: number) => {
 
     const dagreGraph = new dagre.graphlib.Graph();
     dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -29,8 +32,8 @@ export const layoutGraph = (nodes: Node[], edges: Edge[], direction: LayoutDirec
         node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom;
 
         node.position = {
-            x: nodeWithPosition.x - nodeWidth / 2,
-            y: nodeWithPosition.y - nodeHeight / 2,
+            x: nodeWithPosition.x - (nodeWidth || defaultNodeWidth) / 2,
+            y: nodeWithPosition.y - (nodeHeight || defaultNodeHeight) / 2,
         };
 
         return node;

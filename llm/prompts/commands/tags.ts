@@ -7,10 +7,9 @@ export enum ResponseTags {
     APPLICATION = `Application ${questionResponseTagSuffix}`,
     ANSWER_CORRECTNESS = `Answer Correctness Response`,
     HINT = `Hint Response`,
-    STUDY_GUIDE = `Study Guide Response`,
     PLAIN_TEXT = `Plain Text Response`,
     DONT_KNOW = `Don't Know Response`,
-    SYSTEM = `System Response`
+    DECISION = `Decision Response`
 }
 
 export enum CommandTags {

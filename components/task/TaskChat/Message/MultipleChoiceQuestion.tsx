@@ -5,7 +5,7 @@ import confetti from 'canvas-confetti';
 import {Button, HStack, VStack} from "@chakra-ui/react";
 
 import Markdown from "@/components/utilities/markdown";
-import QuestionButtons from "@/components/taskChat/Message/QuestionButtons";
+import QuestionButtons from "@/components/task/TaskChat/Message/QuestionButtons";
 
 import useViewportDimensions from "@/hooks/utilities/useViewportDimensions";
 
