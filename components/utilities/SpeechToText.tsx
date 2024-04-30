@@ -1,9 +1,6 @@
-import React from 'react';
-
-import {FaMicrophone} from "react-icons/fa6";
-
-import {IconButton} from "@chakra-ui/react";
-
+import React, { useState } from 'react';
+import { FaMicrophone, FaCircleStop } from "react-icons/fa6"; // Added FaStopCircle for stop icon
+import { IconButton } from "@chakra-ui/react";
 import useRecordVoice from "@/hooks/utilities/useRecordVoice";
 
 interface Props {
@@ -11,19 +8,25 @@ interface Props {
 }
 
 const SpeechToText: React.FC<Props> = ({ setText }) => {
+    const { startRecording, stopRecording, isRecording } = useRecordVoice(setText);
+    const [recording, setRecording] = useState(false);
 
-    const { startRecording, stopRecording } = useRecordVoice(setText);
+    const toggleRecording = () => {
+        if (recording) {
+            stopRecording();
+        } else {
+            startRecording();
+        }
+        setRecording(!recording);
+    };
 
     return (
         <IconButton
-            onMouseDown={startRecording}
-            onMouseUp={stopRecording}
-            onTouchStart={startRecording}
-            onTouchEnd={stopRecording}
+            onClick={toggleRecording}
+            icon={recording ? <FaCircleStop /> : <FaMicrophone />}
             colorScheme={'brand'}
             variant={'outline'}
-            icon={<FaMicrophone />}
-            aria-label={'Speech to Text'}
+            aria-label={recording ? 'Stop Recording' : 'Start Recording'}
         />
     );
 };

@@ -16,17 +16,22 @@ const useTextToSpeech = (text: string) => {
         };
     }, []);
 
+    const removeMarkdownHashtags = (text: string): string => {
+        // Remove hashtags from the text
+        return text.replace(/#/g, '');
+    };
+
     const speak = useCallback(() => {
-        console.log("Speaking...");
+        console.log("Preparing to speak...");
         if (text && synthesizer) {
+            const cleanedText = removeMarkdownHashtags(text); // Clean the text
             setIsLoading(true);
             synthesizer.speakTextAsync(
-                text,
+                cleanedText,
                 result => {
                     setIsPlaying(true);
                     setIsLoading(false);
                     if (result.reason === ResultReason.SynthesizingAudioCompleted) {
-
                         console.log("Speech synthesis succeeded.");
                     }
                     setTimeout(() => {

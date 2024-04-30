@@ -47,6 +47,7 @@ const TopicNode: ComponentType<NodeProps<TopicNodeType>> = (node) => {
                 borderWidth={2}
                 borderColor={taskTopics[currentTopicIndex].id === node.data.id ? 'brand.500' : 'gray.500'}
                 transition={'all 0.3s ease-in-out'}
+                transform={taskTopics[currentTopicIndex].id === node.data.id ? 'scale(1.1)' : 'none'}
                 // @ts-ignore
                 backgroundColor={numCorrect === 0 ? undefined : transparentize('brand.500', numCorrect / 3)}
             >
