@@ -1,13 +1,13 @@
-import {useState} from "react";
+import {ChangeEvent, useState} from "react";
+import {uploadImages} from "@/services/image";
 
 const useImageInput = () => {
     const [images, setImages] = useState<string[]>([]);
 
-    const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImagesChange = async (e: ChangeEvent<HTMLInputElement>) => {
         if(!e.target.files) return;
         const files = Array.from(e.target.files).filter(file => file.type.includes("image"));
-        const imageUrls = files.map(file => URL.createObjectURL(file));
-        console.log(imageUrls)
+        const imageUrls = await uploadImages(files);
         setImages([...images, ...imageUrls]);
     };
 

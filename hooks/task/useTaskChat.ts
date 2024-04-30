@@ -45,6 +45,8 @@ const useTaskChat = () => {
 
     const [messageBottomRef, setMessageBottomRef] = useState<HTMLDivElement | null>(null);
 
+    const [messageImages, setMessageImages] = useState<{[key: string]: string[]}>({});
+
     const {
         images,
         handleImagesChange,
@@ -100,6 +102,7 @@ const useTaskChat = () => {
         api: `/api/tasks/${task.id}/chat`,
         body: {
             systemInstruction: taskSystemMessage(task, taskTopics),
+            images
         },
         onFinish,
     });
@@ -196,11 +199,19 @@ const useTaskChat = () => {
                 role: 'system',
             }
         ])
+        const newMessageId = nanoid();
+        if(images.length > 0) {
+            setMessageImages({
+                ...messageImages,
+                [newMessageId]: images
+            })
+        }
         await append({
-            id: nanoid(),
+            id: newMessageId,
             content: JSON.stringify(getPrompt(command)),
             role: 'user',
         });
+        resetImages();
     }
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -229,7 +240,8 @@ const useTaskChat = () => {
         images,
         handleImagesChange,
         resetImages,
-        removeImage
+        removeImage,
+        messageImages
     };
 }
 

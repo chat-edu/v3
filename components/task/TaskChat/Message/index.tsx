@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Message as MessageInterface} from "ai";
 
-import {Card, ColorMode, Flex, useColorMode} from "@chakra-ui/react";
+import {Box, Card, ColorMode, Flex, HStack, useColorMode} from "@chakra-ui/react";
 import {transparentize} from "@chakra-ui/theme-tools";
 
 import {SlOptionsVertical} from "react-icons/sl";
@@ -30,6 +30,7 @@ import {Command} from "@/types/commands/Command";
 import DontKnow from "@/components/task/TaskChat/Message/DontKnow";
 import {AnswerStates} from "@/hooks/task/useTaskChat";
 import Decision from "@/components/task/TaskChat/Message/Decision";
+import MessageImage from "@/components/task/TaskChat/Message/MessageImage";
 
 interface Props {
     message: MessageInterface,
@@ -37,6 +38,7 @@ interface Props {
     answerState?: AnswerStates,
     skipTopic: () => void,
     nextQuestion: () => void,
+    images?: string[]
 }
 
 const getRoleBgColor = (role: string, colorMode: ColorMode) => {
@@ -61,7 +63,7 @@ const getRoleJustifyContent = (role: string) => {
     }
 }
 
-const Message: React.FC<Props> = ({ message, promptWithCommand, answerState, skipTopic, nextQuestion }) => {
+const Message: React.FC<Props> = ({ message, promptWithCommand, answerState, skipTopic, nextQuestion, images }) => {
 
     const { colorMode } = useColorMode();
 
@@ -70,24 +72,46 @@ const Message: React.FC<Props> = ({ message, promptWithCommand, answerState, ski
             justifyContent={getRoleJustifyContent(message.role)}
             w="100%"
         >
-            <Card
+            <Flex
                 maxW={'95%'}
-                borderColor={answerState === undefined
-                    ? undefined
-                    : answerState === AnswerStates.CORRECT
-                        ? 'brand.500'
-                        : answerState == AnswerStates.INCORRECT
-                            ? 'red.500'
-                            : 'gray.500'
-                }
-                borderWidth={answerState === undefined ? undefined : 2}
-                // @ts-ignore
-                bg={getRoleBgColor(message.role, colorMode)}
+                flexDirection={'column'}
             >
                 {
-                    getMessageComponent(message, promptWithCommand, skipTopic, nextQuestion, answerState !== undefined)
+                    images && images.length > 0 ? (
+                        <HStack
+                            spacing={2}
+                            mb={2}
+                            justifyContent={getRoleJustifyContent(message.role)}
+                        >
+                            {
+                                images.map((image, index) => (
+                                    <MessageImage
+                                        src={image}
+                                        key={index}
+                                    />
+                                ))
+                            }
+                        </HStack>
+                    ) : null
                 }
-            </Card>
+                <Card
+                    borderColor={answerState === undefined
+                        ? undefined
+                        : answerState === AnswerStates.CORRECT
+                            ? 'brand.500'
+                            : answerState == AnswerStates.INCORRECT
+                                ? 'red.500'
+                                : 'gray.500'
+                    }
+                    borderWidth={answerState === undefined ? undefined : 2}
+                    // @ts-ignore
+                    bg={getRoleBgColor(message.role, colorMode)}
+                >
+                    {
+                        getMessageComponent(message, promptWithCommand, skipTopic, nextQuestion, answerState !== undefined)
+                    }
+                </Card>
+            </Flex>
         </Flex>
     );
 };

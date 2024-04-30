@@ -17,9 +17,10 @@ interface Props {
     answerMapping: { [key: string]: AnswerStates },
     skipTopic: () => void,
     nextQuestion: () => void,
+    messageImages: { [key: string]: string[] }
 }
 
-const Messages: React.FC<Props> = ({ messages, promptWithCommand, answerMapping, skipTopic, nextQuestion }) => {
+const Messages: React.FC<Props> = ({ messages, promptWithCommand, answerMapping, skipTopic, nextQuestion, messageImages }) => {
     return (
         <Box
             w={'100%'}
@@ -50,6 +51,7 @@ const Messages: React.FC<Props> = ({ messages, promptWithCommand, answerMapping,
                                 answerState={answerMapping[message.id]}
                                 skipTopic={skipTopic}
                                 nextQuestion={nextQuestion}
+                                images={messageImages[message.id]}
                             />
                         ))
                     }

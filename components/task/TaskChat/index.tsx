@@ -26,7 +26,7 @@ const TaskChat: React.FC = () => {
         images,
         handleImagesChange,
         removeImage,
-        resetImages
+        messageImages
     } = useTaskChat();
 
     return (
@@ -45,6 +45,7 @@ const TaskChat: React.FC = () => {
                 isLoading={isLoading}
                 skipTopic={skipTopic}
                 nextQuestion={nextQuestion}
+                messageImages={messageImages}
             />
             <InputBox
                 value={input}

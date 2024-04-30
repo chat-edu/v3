@@ -1,11 +1,17 @@
-import {OpenAIStream, StreamingTextResponse} from 'ai';
+import {OpenAIStream, StreamingTextResponse,} from 'ai';
 
 import openai, {model} from "@/llm/openai";
 
 export const runtime = 'edge';
 
 export async function POST(req: Request) {
-    const { messages } = await req.json();
+    const { messages, images } = await req.json();
+
+    console.log(images)
+
+    const initialMessages = messages.slice(0, -1);
+    const currentMessage = messages[messages.length - 1];
+
 
     let stream = OpenAIStream(await openai.chat.completions.create({
         model,
@@ -13,7 +19,21 @@ export async function POST(req: Request) {
             type: 'json_object'
         },
         stream: true,
-        messages: messages,
+        messages: [
+            ...initialMessages,
+            {
+                ...currentMessage,
+                content: images.length > 0 ? [
+                    { type: 'text', text: currentMessage.content },
+                    ...images.map((url: string)  => ({
+                        type: 'image_url',
+                        image_url: {
+                            url
+                        }
+                    })),
+                ]: currentMessage.content,
+            },
+        ],
     }));
 
     return new StreamingTextResponse(
