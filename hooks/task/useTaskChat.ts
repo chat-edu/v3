@@ -18,6 +18,7 @@ import {agentIntroduction} from "@/llm/prompts/tasks/agentIntroduction";
 import {topicSystemMessage} from "@/llm/prompts/tasks/topicSystemMessage";
 
 import {Command, CommandTypes} from "@/types/commands/Command";
+import useImageInput from "@/hooks/utilities/useImageInput";
 
 export enum AnswerStates {
     CORRECT,
@@ -43,6 +44,13 @@ const useTaskChat = () => {
     const [answerMapping, setAnswerMapping] = useState<{[key: string]: AnswerStates}>({});
 
     const [messageBottomRef, setMessageBottomRef] = useState<HTMLDivElement | null>(null);
+
+    const {
+        images,
+        handleImagesChange,
+        resetImages,
+        removeImage
+    } = useImageInput();
 
     const onFinish = async (message: Message) => {
         // If the message is a question, set it as the current question
@@ -211,12 +219,17 @@ const useTaskChat = () => {
         answerMapping,
         isLoading,
         handleInputChange,
+        setInput,
         onSubmit,
         promptWithCommand,
         setMessageBottomRef,
         stop,
         nextQuestion,
-        skipTopic
+        skipTopic,
+        images,
+        handleImagesChange,
+        resetImages,
+        removeImage
     };
 }
 

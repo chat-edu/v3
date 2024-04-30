@@ -84,6 +84,7 @@ const MultipleChoiceQuestion: React.FC<Props> = ({ question, promptWithCommand, 
                     <QuestionButtons
                         promptWithCommand={promptWithCommand}
                         answered={answered}
+                        question={question.question}
                     />
                 </HStack>
                 <VStack

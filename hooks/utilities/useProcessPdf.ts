@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 
 import {useToast} from "@chakra-ui/react";
 
-import {extractTextFromFile} from "@/services/documentIntelligence/extractText";
+import {extractTextFromFile} from "@/services/pdfToText/extractText";
 
 
 const useProcessPdf = () => {

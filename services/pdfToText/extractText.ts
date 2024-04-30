@@ -1,4 +1,4 @@
-import documentAnalysisClient from "@/services/documentIntelligence/client";
+import documentAnalysisClient from "@/services/pdfToText/client";
 
 export const extractTextFromFile = async (file: File) => {
     const formData = new FormData();

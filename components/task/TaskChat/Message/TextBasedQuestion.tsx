@@ -28,6 +28,7 @@ const TextBasedQuestion: React.FC<Props> = ({ textBasedQuestion, promptWithComma
             <QuestionButtons
                 promptWithCommand={promptWithCommand}
                 answered={answered}
+                question={textBasedQuestion.question}
             />
         </HStack>
     );

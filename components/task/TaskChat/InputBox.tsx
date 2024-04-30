@@ -6,7 +6,7 @@ import {
     Flex,
     FormControl,
     HStack,
-    IconButton,
+    IconButton, Input,
     Text,
     Textarea,
     Tooltip,
@@ -19,12 +19,16 @@ import {AnswerStates} from "@/hooks/task/useTaskChat";
 
 import {Command, CommandTypes} from "@/types/commands/Command";
 import {useTaskContext} from "@/contexts/TaskContext";
+import SpeechToText from "@/components/utilities/SpeechToText";
+import {FaImage} from "react-icons/fa6";
+import AddedImage from "@/components/task/TaskChat/AddedImage";
 
 interface Props {
     value: string,
     isLoading: boolean,
     stop: () => void,
     handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>,
+    setInput: (input: string) => void,
     handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void,
     promptWithCommand: (command: Command<any>) => void,
     promptType: CommandTypes
@@ -32,9 +36,12 @@ interface Props {
     answerMapping: { [key: string]: AnswerStates };
     nextQuestion: () => void;
     skipTopic: () => void;
+    handleImagesChange: ChangeEventHandler<HTMLInputElement>;
+    images: string[];
+    removeImage: (index: number) => void;
 }
 
-const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, handleSubmit, nextQuestion, skipTopic, promptType  }) => {
+const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, setInput, handleSubmit, nextQuestion, skipTopic, promptType, handleImagesChange, images, removeImage  }) => {
 
     const { taskTopics, currentTopicIndex, correctAnswersByTopic } = useTaskContext();
 
@@ -78,6 +85,17 @@ const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, handl
                                 : 'Proceed by asking a question, testing your knowledge, or skipping to the next topic.'
                     }
                 </Text>
+                <HStack>
+                    {
+                        images.map((image, index) => (
+                            <AddedImage
+                                key={index}
+                                image={image}
+                                removeImage={() => removeImage(index)}
+                            />
+                        ))
+                    }
+                </HStack>
                 <form
                     onSubmit={handleSubmit}
                     style={{
@@ -110,6 +128,26 @@ const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, handl
                                 placeholder={promptType === CommandTypes.TEXT_BASED ? 'Type your answer...' : 'Ask a question...'}
                             />
                         </FormControl>
+                        <Input
+                            type={'file'}
+                            display={'none'}
+                            id={'file'}
+                            accept={'image/*'}
+                            onChange={handleImagesChange}
+                            multiple
+                        />
+                        <IconButton
+                            as={'label'}
+                            variant={'outline'}
+                            htmlFor={'file'}
+                            colorScheme={'brand'}
+                            flexShrink={0}
+                            icon={<FaImage />}
+                            aria-label={'Upload Image'}
+                        />
+                        <SpeechToText
+                            setText={setInput}
+                        />
                         <Button
                             type={'submit'}
                             colorScheme={'brand'}

@@ -7,6 +7,7 @@ import {AiOutlineExclamationCircle} from "react-icons/ai";
 
 import Markdown from "@/components/utilities/markdown";
 import {AnswerCorrectness} from "@/types/commands/AnswerCorrectness";
+import TextToSpeech from "@/components/utilities/TextToSpeech";
 
 interface Props {
     correctness: AnswerCorrectness
@@ -61,6 +62,7 @@ const QuestionCorrectness: React.FC<Props> = ({ correctness }) => {
                     {correctness.explanation}
                 </Markdown>
             </VStack>
+            <TextToSpeech text={correctness.explanation} />
         </HStack>
     );
 };

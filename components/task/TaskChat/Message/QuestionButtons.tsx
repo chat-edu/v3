@@ -6,13 +6,15 @@ import {hintCommand} from "@/llm/prompts/commands";
 import {dontKnowCommand} from "@/llm/prompts/commands";
 
 import {Command} from "@/types/commands/Command";
+import TextToSpeech from "@/components/utilities/TextToSpeech";
 
 interface Props {
+    question: string,
     promptWithCommand: (command: Command<any>) => void,
     answered: boolean
 }
 
-const QuestionButtons: React.FC<Props> = ({ promptWithCommand, answered }) => {
+const QuestionButtons: React.FC<Props> = ({ question, promptWithCommand, answered }) => {
     return (
         <Stack
             flexDir={{
@@ -49,6 +51,7 @@ const QuestionButtons: React.FC<Props> = ({ promptWithCommand, answered }) => {
             >
                 {"Don't Know"}
             </Button>
+            <TextToSpeech text={question} />
         </Stack>
     );
 };

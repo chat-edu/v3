@@ -207,6 +207,7 @@ const getMessageComponent = (
             return (
                 <TextMessage
                     content={content}
+                    showTextToSpeech={message.role === 'assistant'}
                 />
             )
     }

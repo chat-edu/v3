@@ -16,12 +16,17 @@ const TaskChat: React.FC = () => {
         answerMapping,
         isLoading,
         handleInputChange,
+        setInput,
         onSubmit,
         promptWithCommand,
         setMessageBottomRef,
         stop,
         nextQuestion,
-        skipTopic
+        skipTopic,
+        images,
+        handleImagesChange,
+        removeImage,
+        resetImages
     } = useTaskChat();
 
     return (
@@ -48,11 +53,15 @@ const TaskChat: React.FC = () => {
                 showMessage={messages.length === 0}
                 answerMapping={answerMapping}
                 handleChange={handleInputChange}
+                setInput={setInput}
                 handleSubmit={onSubmit}
                 promptWithCommand={promptWithCommand}
                 stop={stop}
                 nextQuestion={nextQuestion}
                 skipTopic={skipTopic}
+                handleImagesChange={handleImagesChange}
+                images={images}
+                removeImage={removeImage}
             />
         </Flex>
     );
