@@ -3,7 +3,7 @@ import React from 'react';
 import {GraphMedia} from "@/types/graph/GraphMedia";
 
 // @ts-ignore
-import { AzureMP } from 'react-azure-mp'
+import { AzureMP } from '@hartmannindustries/azure-media-player'
 
 interface Props {
     graphMedia: GraphMedia,
