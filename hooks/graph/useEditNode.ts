@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {useReactFlow, NodeProps} from "reactflow";
 
 import {Topic} from "@/types/graph/Topic";
-import {updateTopic} from "@/services/topic";
+import {updateTopic} from "@/services/api/topic";
 import {useToast} from "@chakra-ui/react";
 
 const useEditNode = (node: NodeProps<Topic>) => {

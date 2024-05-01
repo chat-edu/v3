@@ -9,8 +9,8 @@ import useGraphQuery from "@/hooks/queries/graphs/useGraph";
 import useGraphTopicEdges from "@/hooks/queries/topicEdges/useGraphTopicEdges";
 
 import {layoutGraph} from "@/services/layout";
-import {deleteTopic} from "@/services/topic";
-import {createTopicEdge, deleteTopicEdge} from "@/services/topicEdge";
+import {deleteTopic} from "@/services/api/topic";
+import {createTopicEdge, deleteTopicEdge} from "@/services/api/topicEdge";
 
 import {useLayoutDirection} from "@/contexts/LayoutDirectionContext";
 

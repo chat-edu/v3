@@ -49,9 +49,9 @@ const findRelevantTopics = async (task: TaskRow): Promise<TopicRow[]> => {
     let response = await generateJson<{ mostRelevantTopicName: string}>(mostRelevantTopicPrompt(task, graphRow, topics));
 
     if(response.mostRelevantTopicName) {
-        const mostRelevantTopic = await getTopicByName(response.mostRelevantTopicName);
+        const mostRelevantTopic = await getTopicByName(response.mostRelevantTopicName, task.graph_id);
         if(!mostRelevantTopic) return [];
-        return findIncomingTopics(mostRelevantTopic.id, [mostRelevantTopic])
+        return findIncomingTopics(mostRelevantTopic.id, [mostRelevantTopic]);
     }
     return [];
 }

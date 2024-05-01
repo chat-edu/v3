@@ -17,7 +17,6 @@ const useTextToSpeech = (text: string) => {
     }, []);
 
     const speak = useCallback(() => {
-        console.log("Speaking...");
         if (text && synthesizer) {
             setIsLoading(true);
             synthesizer.speakTextAsync(
@@ -25,10 +24,7 @@ const useTextToSpeech = (text: string) => {
                 result => {
                     setIsPlaying(true);
                     setIsLoading(false);
-                    if (result.reason === ResultReason.SynthesizingAudioCompleted) {
-
-                        console.log("Speech synthesis succeeded.");
-                    }
+                    if (result.reason === ResultReason.SynthesizingAudioCompleted) {}
                     setTimeout(() => {
                         setIsPlaying(false);
                     }, result.audioDuration / 10000);
@@ -45,7 +41,6 @@ const useTextToSpeech = (text: string) => {
         if (isPlaying && synthesizer) {
             synthesizer.close(); // Close the synthesizer to stop speaking
             setIsPlaying(false);
-            console.log("Speech synthesis stopped.");
             setSynthesizer(newSynthesizer());
         }
     }, [isPlaying, synthesizer]);

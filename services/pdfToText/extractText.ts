@@ -1,10 +1,7 @@
 import documentAnalysisClient from "@/services/pdfToText/client";
 
-export const extractTextFromFile = async (file: File) => {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    const poller = await documentAnalysisClient.beginClassifyDocument('prebuilt-read', file)
+export const extractTextFromFile = async (file: Buffer) => {
+    const poller = await documentAnalysisClient.beginClassifyDocument('prebuilt-read', file);
 
     const { pages } = await poller.pollUntilDone();
 

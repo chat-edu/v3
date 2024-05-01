@@ -1,9 +1,9 @@
 import {NodeProps, useReactFlow} from "reactflow";
 
 import {NodeTypes} from "@/types/graph/NodeTypes";
-import {createTopic} from "@/services/topic";
+import {createTopic} from "@/services/api/topic";
 import {Topic} from "@/types/graph/Topic";
-import {createTopicEdge} from "@/services/topicEdge";
+import {createTopicEdge} from "@/services/api/topicEdge";
 import {useToast} from "@chakra-ui/react";
 
 const useGeneratedTopic = (node: NodeProps<Topic>) => {

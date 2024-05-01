@@ -4,7 +4,7 @@ import {ModalBody, ModalCloseButton, ModalFooter, ModalHeader} from "@chakra-ui/
 
 import {Topic} from "@/types/graph/Topic";
 import Editor from "@/components/utilities/editor";
-import {updateTopic} from "@/services/topic";
+import {updateTopic} from "@/services/api/topic";
 import {useToast} from "@chakra-ui/react";
 
 interface Props {

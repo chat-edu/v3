@@ -1,5 +1,5 @@
 import {ChangeEvent, useState} from "react";
-import {uploadImages} from "@/services/image";
+import {uploadImages} from "@/services/api/image";
 
 const useImageInput = () => {
     const [images, setImages] = useState<string[]>([]);

@@ -10,7 +10,7 @@ export const findIncomingTopics = async (topicId: number, topics: TopicRow[] = [
         if(topicRow === null) {
             continue;
         }
-        topics.unshift(topicRow);
+        if(!topics.some(t => t.id === topicRow.id)) topics.unshift(topicRow);
         await findIncomingTopics(edge.source_topic_id, topics);
     }
     return topics;

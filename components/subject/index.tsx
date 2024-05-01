@@ -1,15 +1,18 @@
 import React from 'react';
 
+import Link from "next/link";
+
 import {Button, Container, Heading, HStack, VStack} from "@chakra-ui/react";
+import {AddIcon} from "@chakra-ui/icons";
 
 import TaskInput from "@/components/subject/TaskInput";
+import UserSubjectTasks from "@/components/subject/UserSubjectTasks";
+import Loading from "@/components/utilities/Loading";
+
+import useGraph from "@/hooks/queries/graphs/useGraph";
+import useAuth from "@/hooks/useAuth";
 
 import {Graph} from "@/types/graph/Graph";
-import useGraph from "@/hooks/queries/graphs/useGraph";
-import Loading from "@/components/utilities/Loading";
-import UserSubjectTasks from "@/components/subject/UserSubjectTasks";
-import useAuth from "@/hooks/useAuth";
-import Link from "next/link";
 
 interface Props {
     subjectId: Graph['id']
@@ -42,15 +45,27 @@ const Subject: React.FC<Props> = ({ subjectId }) => {
                     >
                         <Heading>
                             {graph?.name}
-                        </Heading>
-                        <Link href={`/graph/${subjectId}`}>
-                            <Button
-                                colorScheme={'brand'}
-                                variant={'outline'}
+                        </Heading>s
+                        <HStack>
+                            <Link
+                                href={`/subject/${subjectId}/addContent`}
                             >
-                                View Graph
-                            </Button>
-                        </Link>
+                                <Button
+                                    leftIcon={<AddIcon />}
+                                    colorScheme={'brand'}
+                                >
+                                    Add Content
+                                </Button>
+                            </Link>
+                            <Link href={`/graph/${subjectId}`}>
+                                <Button
+                                    colorScheme={'brand'}
+                                    variant={'outline'}
+                                >
+                                    View Graph
+                                </Button>
+                            </Link>
+                        </HStack>
                     </HStack>
                     <TaskInput
                         subjectId={subjectId}

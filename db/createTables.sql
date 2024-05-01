@@ -47,6 +47,25 @@ CREATE TABLE TaskTopics (
     FOREIGN KEY (topic_id) REFERENCES Topics(id) ON DELETE CASCADE
 );
 
+CREATE TABLE GraphMedia (
+    id SERIAL PRIMARY KEY,
+    graph_id INTEGER NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    media_url VARCHAR(255) NOT NULL,
+    media_type VARCHAR(255) NOT NULL,
+    processed BOOLEAN NOT NULL,
+    FOREIGN KEY (graph_id) REFERENCES Graphs(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Videos (
+    media_id INTEGER PRIMARY KEY,
+    video_analyzer_id VARCHAR(255) NOT NULL,
+    FOREIGN KEY (media_id) REFERENCES GraphMedia(id) ON DELETE CASCADE
+);
+
+-- delete all tasks for the graph with id 57
+DELETE FROM Tasks WHERE graph_id = 57;
+
 CREATE TABLE FreeResponseQuestions (
     id SERIAL PRIMARY KEY,
     topic_id INT,
@@ -76,5 +95,5 @@ CREATE TABLE MultipleChoiceQuestions (
     FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
--- delete all tasks with graph id 44
-DELETE FROM Tasks WHERE graph_id = 44;
+-- get all graph media for graphID 38
+SELECT * FROM GraphMedia WHERE graph_id = 38;

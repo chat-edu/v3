@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 
-import {generateContent as generateContentService, updateTopic} from "@/services/topic";
+import {generateContent as generateContentService, updateTopic} from "@/services/api/topic";
 
 import {MDXEditorMethods} from "@mdxeditor/editor";
 import {Topic} from "@/types/graph/Topic";

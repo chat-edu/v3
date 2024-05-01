@@ -4,7 +4,6 @@ import * as fs from "fs";
 
 export const POST = async (req: Request) => {
     const formData = await req.formData();
-
     const files = formData.get('file');
 
     if (!files) {

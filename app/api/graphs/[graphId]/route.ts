@@ -1,9 +1,7 @@
-import {GraphRow, GraphRowInput} from "@/db/types/GraphRow";
 import {deleteGraph, getGraph, updateGraph} from "@/db/services/graphs";
 
-interface GraphIdParams {
-    graphId: GraphRow["id"];
-}
+import {GraphRowInput} from "@/db/types/GraphRow";
+import {GraphIdParams} from "@/app/api/graphs/[graphId]/GraphIdParams";
 
 export const GET = async (req: Request, {params}: { params: GraphIdParams }) => {
     return Response.json(await getGraph(params.graphId));

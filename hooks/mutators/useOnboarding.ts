@@ -4,7 +4,7 @@ import {useToast} from "@chakra-ui/react";
 
 import useAuth from "@/hooks/useAuth";
 
-import {createUser} from "@/services/user";
+import {createUser} from "@/services/api/user";
 
 
 const useOnboarding = () => {

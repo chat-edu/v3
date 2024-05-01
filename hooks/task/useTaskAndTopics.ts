@@ -5,6 +5,7 @@ import useTaskTopics from "@/hooks/queries/topics/useTaskTopics";
 import useTaskTopicEdges from "@/hooks/queries/topicEdges/useTaskTopicEdges";
 
 import {Task} from "@/types/Task";
+import {Topic} from "@/types/graph/Topic";
 
 
 const useTaskAndTopics = (taskId: Task["id"]) => {
@@ -16,12 +17,21 @@ const useTaskAndTopics = (taskId: Task["id"]) => {
     const sortedTopics = useMemo(() => {
         // if topics or topicEdges are not loaded, return an empty array
         if (isTopicsLoading || isTopicEdgesLoading) return [];
-        // return a topologically sorted array of topics
-        return topics.sort((a, b) => {
-            const outEdges = topicEdges.filter(edge => edge.sourceTopicId === a.id);
-            const inEdges = topicEdges.filter(edge => edge.sourceTopicId === b.id);
-            return inEdges.length - outEdges.length;
-        });
+        // perform a topological sort on the topics
+        const sortedTopics: Topic[] = [];
+        const visited = new Set();
+        const visit = (topicId: number) => {
+            if (visited.has(topicId)) return;
+            visited.add(topicId);
+            const topic = topics.find(topic => topic.id === topicId);
+            if (!topic) return;
+            topicEdges
+                .filter(edge => edge.targetTopicId === topicId)
+                .forEach(edge => visit(edge.sourceTopicId));
+            sortedTopics.push(topic);
+        }
+        topics.forEach(topic => visit(topic.id));
+        return sortedTopics;
     }, [topics, topicEdges]);
 
     return {

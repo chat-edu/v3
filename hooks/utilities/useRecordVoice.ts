@@ -60,21 +60,13 @@ const useRecordVoice = (setText: (text: string) => void) => {
             speechRecognizer.recognizeOnceAsync(result => {
                 switch (result.reason) {
                     case ResultReason.RecognizedSpeech:
-                        console.log(`RECOGNIZED: Text=${result.text}`);
                         setText(result.text);
                         break;
                     case ResultReason.NoMatch:
-                        console.log("NOMATCH: Speech could not be recognized.");
                         break;
                     case ResultReason.Canceled:
                         const cancellation = CancellationDetails.fromResult(result);
-                        console.log(`CANCELED: Reason=${cancellation.reason}`);
-
-                        if (cancellation.reason == CancellationReason.Error) {
-                            console.log(`CANCELED: ErrorCode=${cancellation.ErrorCode}`);
-                            console.log(`CANCELED: ErrorDetails=${cancellation.errorDetails}`);
-                            console.log("CANCELED: Did you set the speech resource key and region values?");
-                        }
+                        if (cancellation.reason == CancellationReason.Error) {}
                         break;
                 }
                 speechRecognizer.close();

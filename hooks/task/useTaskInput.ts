@@ -1,6 +1,6 @@
 import {Graph} from "@/types/graph/Graph";
 import {useState} from "react";
-import {createTask} from "@/services/task";
+import {createTask} from "@/services/api/task";
 import useAuth from "@/hooks/useAuth";
 import {useToast} from "@chakra-ui/react";
 

@@ -11,4 +11,6 @@ ${topic.text}
 The user's eventual goal is to complete the following task: ${task.text}
 
 You should not give away information to the task or ask questions specifically about it yet, but the questions should lead the user to the task.
+
+If relevant, you can add any images that are present in the notes. If you do, use the markdown syntax: ![description](url)
 `

@@ -4,8 +4,8 @@ import {useToast} from "@chakra-ui/react";
 
 import {NodeProps, useReactFlow} from "reactflow";
 
-import {createTopic} from "@/services/topic";
-import {createTopicEdge} from "@/services/topicEdge";
+import {createTopic} from "@/services/api/topic";
+import {createTopicEdge} from "@/services/api/topicEdge";
 
 import {Topic} from "@/types/graph/Topic";
 import {NodeTypes} from "@/types/graph/NodeTypes";

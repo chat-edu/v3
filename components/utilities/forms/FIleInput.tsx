@@ -2,17 +2,18 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import {Box, Button, Icon, Text, useColorModeValue, useToast, VStack} from "@chakra-ui/react";
 
-import {FiFile} from "react-icons/fi";
-
 import {FileRejection, useDropzone} from "react-dropzone";
+import {IconType} from "react-icons";
 
 interface Props {
     accept?: string;
     setFile: (file: File) => void;
     text: string;
+    icon: IconType,
+    isDisabled?: boolean;
 }
 
-const FileInput: React.FC<Props> = ({ accept, setFile, text }) => {
+const FileInput: React.FC<Props> = ({ accept, setFile, text, icon, isDisabled }) => {
 
     const toast = useToast();
 
@@ -88,7 +89,7 @@ const FileInput: React.FC<Props> = ({ accept, setFile, text }) => {
                 >
                     <VStack>
                         <Icon
-                            as={FiFile}
+                            as={icon}
                             boxSize={16}
                         />
                         <Text
@@ -114,11 +115,15 @@ const FileInput: React.FC<Props> = ({ accept, setFile, text }) => {
             <Button
                 onClick={handleClick}
                 leftIcon={
-                    <Icon as={FiFile} />
+                    <Icon as={icon} />
                 }
                 w={'100%'}
                 variant={'outline'}
                 border={'dashed'}
+                whiteSpace={'nowrap'}
+                overflow={'hidden'}
+                textOverflow={'ellipsis'}
+                isDisabled={isDisabled}
             >
                 {text}
             </Button>

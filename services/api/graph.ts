@@ -28,9 +28,9 @@ export const deleteGraph = async (graphId: GraphRow["id"], creatorId: User["id"]
         .then(data => {
             if(data) {
                 emitUserGraphsChangedEvent(creatorId);
-                return data as boolean;
+                return data;
             } else {
-                return false;
+                return null;
             }
         })
-        .catch(() => false);
+        .catch(() => null);

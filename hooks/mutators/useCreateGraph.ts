@@ -1,9 +1,9 @@
 import {useState} from "react";
 
 import {useCurrentUser} from "@/contexts/CurrentUserContext";
-import {createGraph} from "@/services/graph";
+import {createGraph} from "@/services/api/graph";
 import {useToast} from "@chakra-ui/react";
-import {createTopic} from "@/services/topic";
+import {createTopic} from "@/services/api/topic";
 
 const useCreateGraph = () => {
 

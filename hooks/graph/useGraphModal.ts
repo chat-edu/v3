@@ -7,7 +7,7 @@ import useGraphTopics from "@/hooks/queries/topics/useGraphTopics";
 import useAuth from "@/hooks/useAuth";
 import useUserSubjectTasks from "@/hooks/queries/tasks/useUserSubjectTasks";
 
-import { deleteGraph as deleteGraphService } from "@/services/graph";
+import { deleteGraph as deleteGraphService } from "@/services/api/graph";
 
 import {Graph} from "@/types/graph/Graph";
 

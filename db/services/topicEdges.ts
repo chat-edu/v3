@@ -4,10 +4,25 @@ import {TOPIC_EDGES_TABLE, TOPICS_TABLE} from "@/db/tables";
 
 import {TopicEdgeRow} from "@/db/types/TopicEdgeRow";
 import {TopicRow} from "@/db/types/TopicRow";
+import {NewEdge} from "@/llm/types/graphUpdates/NewEdge";
+import {getTopicByName} from "@/db/services/topics";
+import {Graph} from "@/types/graph/Graph";
 
 export const addTopicEdge = async (topicEdge: TopicEdgeRow): Promise<TopicEdgeRow | null> => {
     return add<TopicEdgeRow, TopicEdgeRow>(TOPIC_EDGES_TABLE, topicEdge);
 };
+
+export const addFromNewEdge = async (graphId: Graph["id"], newEdge: NewEdge): Promise<TopicEdgeRow | null> => {
+    const [sourceTopicId, targetTopicId] = await Promise.all([
+        getTopicByName(newEdge.sourceTopicName, graphId).then(topic => topic?.id),
+        getTopicByName(newEdge.targetTopicName, graphId).then(topic => topic?.id),
+    ]);
+    if(!sourceTopicId || !targetTopicId) return null;
+    return addTopicEdge({
+        source_topic_id: sourceTopicId,
+        target_topic_id: targetTopicId,
+    });
+}
 
 // READ
 

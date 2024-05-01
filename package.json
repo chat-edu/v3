@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@azure/ai-form-recognizer": "^5.0.0",
+    "@azure/identity": "^4.1.0",
     "@azure/storage-blob": "^12.17.0",
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",

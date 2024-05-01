@@ -12,11 +12,8 @@ import { FFmpeg } from '@ffmpeg/ffmpeg';
 // Function to check and convert the audio file to WAV if needed
 const convertToWavIfNeeded = async (audioBlob: Blob): Promise<Blob> => {
     if (audioBlob.type === 'audio/wav') {
-        console.log('No conversion needed, the file is already a WAV file.');
         return audioBlob;
     }
-
-    console.log('Starting conversion to WAV format...');
 
     const ffmpeg = new FFmpeg();
 
