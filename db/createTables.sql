@@ -63,37 +63,31 @@ CREATE TABLE Videos (
     FOREIGN KEY (media_id) REFERENCES GraphMedia(id) ON DELETE CASCADE
 );
 
--- delete all tasks for the graph with id 57
-DELETE FROM Tasks WHERE graph_id = 57;
 
-CREATE TABLE FreeResponseQuestions (
+CREATE TABLE QuestionSubmissions (
     id SERIAL PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
     topic_id INT,
     question TEXT NOT NULL,
-    user_id VARCHAR(255) NOT NULL,
-    answer TEXT,
     correct BOOLEAN,
     explanation TEXT,
-    FOREIGN KEY (topic_id) REFERENCES Topics(id) ON DELETE CASCADE,
+    timestamp TIMESTAMP NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
+CREATE TABLE FreeResponseQuestionSubmissions (
+    question_id SERIAL PRIMARY KEY,
+    answer TEXT NOT NULL,
+    FOREIGN KEY (question_id) REFERENCES QuestionSubmissions(id) ON DELETE CASCADE
+);
+
 CREATE TABLE MultipleChoiceQuestions (
-    id SERIAL PRIMARY KEY,
-    topic_id INT,
-    question TEXT NOT NULL,
-    user_id VARCHAR(255) NOT NULL,
+    question_id SERIAL PRIMARY KEY,
     option_a TEXT,
     option_b TEXT,
     option_c TEXT,
     option_d TEXT,
     correct_answer CHAR(1) CHECK(correct_answer IN ('A', 'B', 'C', 'D')),
-    answer CHAR(1),
-    explanation TEXT,
-    correct BOOLEAN,
-    FOREIGN KEY (topic_id) REFERENCES Topics(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+    answer CHAR(1) CHECK(answer IN ('A', 'B', 'C', 'D')),
+    FOREIGN KEY (question_id) REFERENCES QuestionSubmissions(id) ON DELETE CASCADE
 );
-
--- get all graph media for graphID 38
-SELECT * FROM GraphMedia WHERE graph_id = 38;

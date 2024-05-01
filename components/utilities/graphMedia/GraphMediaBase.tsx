@@ -1,0 +1,131 @@
+import React from 'react';
+
+import {
+    Button,
+    HStack,
+    Icon,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Text,
+    useDisclosure,
+    VStack
+} from "@chakra-ui/react";
+
+import {FiFile} from "react-icons/fi";
+import {FaDownload, FaImage, FaVideo} from "react-icons/fa6";
+
+import Link from "next/link";
+
+import {GraphMedia as GraphMediaType} from "@/types/graph/GraphMedia";
+import {GraphMediaTypes} from "@/db/types/GraphMediaRow";
+
+interface Props {
+    graphMedia: GraphMediaType,
+    analyzeButton: React.ReactNode,
+    modalContent: React.ReactNode
+}
+
+const GraphMediaBase: React.FC<Props> = ({ graphMedia, analyzeButton, modalContent }) => {
+    
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    return (
+        <>
+            <Modal
+                isOpen={isOpen}
+                onClose={onClose}
+                size={'2xl'}
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>{graphMedia.name}</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {modalContent}
+                    </ModalBody>
+                    <ModalFooter>
+                        <HStack
+                            w={'100%'}
+                            justifyContent={'end'}
+                        >
+                            <Link
+                                href={graphMedia.mediaUrl}
+                            >
+                                <Button
+                                    colorScheme={'brand'}
+                                    variant={'outline'}
+                                    leftIcon={<FaDownload />}
+                                >
+                                    Download
+                                </Button>
+                            </Link>
+                            {graphMedia.processed ? null : analyzeButton}
+                        </HStack>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+            <HStack
+                spacing={2}
+                w={'100%'}
+                justifyContent={'space-between'}
+                borderWidth={2}
+                rounded={'md'}
+                p={2}
+                pl={4}
+                _hover={{
+                    borderColor: 'brand.500',
+                }}
+                cursor={'pointer'}
+                onClick={onOpen}
+            >
+                <HStack
+                    spacing={4}
+                    flexShrink={1}
+                >
+                    <Icon
+                        as={
+                            graphMedia.mediaType === GraphMediaTypes.PDF
+                                ? FiFile
+                                : graphMedia.mediaType === GraphMediaTypes.Video
+                                    ? FaVideo
+                                    : FaImage
+                        }
+                    />
+                    <VStack
+                        spacing={0}
+                        alignItems={'flex-start'}
+                        flex={1}
+                    >
+                        <Text
+                            fontWeight={'semibold'}
+                        >
+                            {graphMedia.name}
+                        </Text>
+                        <Link
+                            href={graphMedia.mediaUrl}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <Text
+                                fontSize={'sm'}
+                                color={'gray.500'}
+                                cursor={'pointer'}
+                            >
+                                Download
+                            </Text>
+                        </Link>=
+                    </VStack>
+                </HStack>
+                {!graphMedia.processed && (
+                    analyzeButton
+                )}
+            </HStack>
+        </>
+    );
+};
+
+export default GraphMediaBase;
