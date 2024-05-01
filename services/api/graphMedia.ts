@@ -52,3 +52,19 @@ export const getVideoState = async (mediaId: GraphMediaRow["id"]) => {
         })
         .catch(() => null);
 }
+
+export const deleteMedia = async (mediaId: GraphMediaRow["id"], graphId: GraphMediaRow['graph_id']) => {
+    return fetch(`/api/graphMedia/${mediaId}`, {
+        method: 'DELETE',
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                emitGraphMediaChangedEvent(graphId);
+                return true;
+            } else {
+                return false;
+            }
+        })
+        .catch(() => false);
+}

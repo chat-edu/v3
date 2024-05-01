@@ -23,6 +23,7 @@ import Link from "next/link";
 
 import {GraphMedia as GraphMediaType} from "@/types/graph/GraphMedia";
 import {GraphMediaTypes} from "@/db/types/GraphMediaRow";
+import DeleteMediaButton from "@/components/utilities/graphMedia/DeleteMediaButton";
 
 interface Props {
     graphMedia: GraphMediaType,
@@ -53,6 +54,9 @@ const GraphMediaBase: React.FC<Props> = ({ graphMedia, analyzeButton, modalConte
                             w={'100%'}
                             justifyContent={'end'}
                         >
+                            <DeleteMediaButton
+                                media={graphMedia}
+                            />
                             <Link
                                 href={graphMedia.mediaUrl}
                             >
