@@ -1,7 +1,6 @@
-import {IconType} from "react-icons";
-
 export enum AuthProviders {
     GOOGLE = "google",
+    MICROSOFT = "azure-ad",
 }
 
 export interface AuthProviderButton {
