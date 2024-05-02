@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    Button,
+    Button, Divider,
     HStack,
     Icon,
     Modal,
@@ -42,13 +42,19 @@ const GraphMediaBase: React.FC<Props> = ({ graphMedia, analyzeButton, modalConte
                 isOpen={isOpen}
                 onClose={onClose}
                 size={'2xl'}
+                scrollBehavior={'inside'}
             >
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>{graphMedia.name}</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody>
+                    <ModalBody
+                        display={'flex'}
+                        flexDirection={'column'}
+                        gap={4}
+                    >
                         {modalContent}
+                        <Divider />
                         {
                             graphMedia.processed ? <Index media={graphMedia} /> : null
                         }

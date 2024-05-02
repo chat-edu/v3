@@ -19,7 +19,9 @@ const GraphUpdates: React.FC<Props> = ({ media }) => {
             w={'100%'}
             alignItems={'flex-start'}
         >
-            <Heading>
+            <Heading
+                size={'md'}
+            >
                 Graph Updates
             </Heading>
             {
@@ -31,7 +33,10 @@ const GraphUpdates: React.FC<Props> = ({ media }) => {
                 ) : (
                     graphUpdate ? (
                         <>
-                            <Text>
+                            <Text
+                                fontSize={'sm'}
+                                color={'gray.500'}
+                            >
                                 Analysis of this {media.mediaType} yielded {graphUpdate.updates.newTopics.length} new topics, {graphUpdate.updates.newEdges.length} new connections, and {graphUpdate.updates.updatedTopics.length} topic updates.
                             </Text>
                             <GraphUpdatesGraph

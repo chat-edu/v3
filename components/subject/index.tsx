@@ -1,13 +1,12 @@
 import React from 'react';
 
-import Link from "next/link";
-
-import {Button, Container, Heading, HStack, VStack} from "@chakra-ui/react";
-import {AddIcon} from "@chakra-ui/icons";
+import {Card, Container, VStack} from "@chakra-ui/react";
 
 import TaskInput from "@/components/subject/TaskInput";
 import UserSubjectTasks from "@/components/subject/UserSubjectTasks";
 import Loading from "@/components/utilities/Loading";
+import GraphMediaFiles from "@/components/subject/GraphMediaFiles";
+import SubjectHeader from "@/components/subject/SubjectHeader";
 
 import useGraph from "@/hooks/queries/graphs/useGraph";
 import useAuth from "@/hooks/useAuth";
@@ -26,7 +25,7 @@ const Subject: React.FC<Props> = ({ subjectId }) => {
 
     return (
         <Loading
-            loading={loading || !user}
+            loading={loading || !user || !graph}
             h={'100%'}
             w={'100%'}
         >
@@ -34,51 +33,40 @@ const Subject: React.FC<Props> = ({ subjectId }) => {
                 py={8}
                 maxW={'4xl'}
             >
-                <VStack
-                    spacing={4}
-                    alignItems={'start'}
-                    w={'100%'}
-                >
-                    <HStack
-                        w={'100%'}
-                        justifyContent={'space-between'}
-                    >
-                        <Heading>
-                            {graph?.name}
-                        </Heading>s
-                        <HStack>
-                            <Link
-                                href={`/subject/${subjectId}/addContent`}
-                            >
-                                <Button
-                                    leftIcon={<AddIcon />}
-                                    colorScheme={'brand'}
-                                >
-                                    Add Content
-                                </Button>
-                            </Link>
-                            <Link href={`/graph/${subjectId}`}>
-                                <Button
-                                    colorScheme={'brand'}
-                                    variant={'outline'}
-                                >
-                                    View Graph
-                                </Button>
-                            </Link>
-                        </HStack>
-                    </HStack>
-                    <TaskInput
-                        subjectId={subjectId}
-                    />
+
                     {
-                        user && (
-                            <UserSubjectTasks
-                                userId={user.id}
-                                subjectId={subjectId}
-                            />
+                        graph ? (
+                            <VStack
+                                spacing={8}
+                                alignItems={'start'}
+                                w={'100%'}
+                            >
+                                <SubjectHeader
+                                    graph={graph}
+                                />
+                                <TaskInput
+                                    subjectId={subjectId}
+                                />
+                                {
+                                    user && (
+                                        <UserSubjectTasks
+                                            userId={user.id}
+                                            subjectId={subjectId}
+                                        />
+                                    )
+                                }
+                                {
+                                    <GraphMediaFiles
+                                        graphId={subjectId}
+                                    />
+                                }
+                            </VStack>
+                        ) : (
+                            <Card>
+                                Subject not found.
+                            </Card>
                         )
                     }
-                </VStack>
             </Container>
         </Loading>
     );

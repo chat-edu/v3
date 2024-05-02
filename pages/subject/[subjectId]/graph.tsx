@@ -6,7 +6,7 @@ import Layout from "@/components/layout";
 import Loading from "@/components/utilities/Loading";
 import Graph from "@/components/graph";
 
-const GraphPage = ({ graphId } : {graphId: string}) => {
+const GraphPage = ({ subjectId } : {subjectId: string}) => {
 
     return (
         <>
@@ -21,11 +21,11 @@ const GraphPage = ({ graphId } : {graphId: string}) => {
             </Head>
             <Layout>
                 <Loading
-                    loading={!graphId}
+                    loading={!subjectId}
                     h={'100%'}
                 >
                     <Graph
-                        graphId={parseInt(graphId as string)}
+                        graphId={parseInt(subjectId as string)}
                     />
                 </Loading>
             </Layout>
@@ -35,7 +35,7 @@ const GraphPage = ({ graphId } : {graphId: string}) => {
 
 GraphPage.getInitialProps = async (ctx: NextPageContext) => {
     return {
-        graphId: ctx.query.graphId
+        subjectId: ctx.query.subjectId
     };
 }
 

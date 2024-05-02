@@ -12,6 +12,7 @@ const MessageImage: React.FC<Props> = ({ src }) => {
             h={'100px'}
             rounded={'md'}
             bg={'white'}
+            alt={'message image'}
         />
     );
 };

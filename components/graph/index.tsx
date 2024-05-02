@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Button, Heading, Text, VStack} from "@chakra-ui/react";
+import {Card, Heading, HStack, IconButton, Tooltip, VStack} from "@chakra-ui/react";
 
 import {Background, Controls, NodeTypes, Panel, ReactFlow} from "reactflow";
 
@@ -67,29 +67,33 @@ const Graph: React.FC<Props> = ({ graphId }) => {
                     <Loading loading={graphLoading}>
                         {
                             graph ? (
-                                <VStack
-                                    alignItems={'flex-start'}
-                                >
-                                    <Link
-                                        href={`/subject/${graph.id}`}
-                                    >
-                                        <Button
-                                            leftIcon={<ArrowBackIcon />}
-                                            variant={'ghost'}
+                                <Card>
+                                    <HStack>
+                                        <Link
+                                            href={`/subject/${graph.id}`}
                                         >
-                                            Back
-                                        </Button>
-                                    </Link>
-                                    <Heading>
-                                        {graph?.name}
-                                    </Heading>
-                                    <UsernameText id={graph?.creatorId} />
-                                </VStack>
-                            ) : (
-                                <Text>
-                                    Graph not found
-                                </Text>
-                            )
+                                            <Tooltip
+                                                label={'Back to Subject'}
+                                            >
+                                                <IconButton
+                                                    icon={<ArrowBackIcon />}
+                                                    variant={'ghost'}
+                                                    aria-label={'Back'}
+                                                    size={'sm'}
+                                                />
+                                            </Tooltip>
+                                        </Link>
+                                        <VStack
+                                            alignItems={'flex-start'}
+                                        >
+                                            <Heading>
+                                                {graph?.name}
+                                            </Heading>
+                                            <UsernameText id={graph?.creatorId} />
+                                        </VStack>
+                                    </HStack>
+                                </Card>
+                            ) : null
                         }
                     </Loading>
                 </Panel>
