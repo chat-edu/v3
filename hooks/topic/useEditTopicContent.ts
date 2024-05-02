@@ -7,7 +7,7 @@ import {Topic} from "@/types/graph/Topic";
 import {useToast} from "@chakra-ui/react";
 
 
-const useEditor = (topic: Topic) => {
+const useEditTopicContent = (topic: Topic) => {
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -85,4 +85,4 @@ const useEditor = (topic: Topic) => {
     }
 }
 
-export default useEditor;
+export default useEditTopicContent;

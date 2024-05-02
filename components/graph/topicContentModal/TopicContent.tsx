@@ -1,11 +1,22 @@
 import React from 'react';
 
-import {ModalBody, ModalCloseButton, ModalFooter, ModalHeader} from "@chakra-ui/modal";
+import {
+    Button,
+    Heading,
+    HStack,
+    ModalBody,
+    ModalFooter,
+    ModalHeader
+} from "@chakra-ui/react";
+
+import {FaWandMagicSparkles} from "react-icons/fa6";
+
+import Editor from "@/components/utilities/editor";
+import Markdown from "@/components/utilities/markdown";
+
+import useEditTopicContent from "@/hooks/topic/useEditTopicContent";
 
 import {Topic} from "@/types/graph/Topic";
-import Editor from "@/components/utilities/editor";
-import {updateTopic} from "@/services/api/topic";
-import {useToast} from "@chakra-ui/react";
 
 interface Props {
     topic: Topic
@@ -13,15 +24,84 @@ interface Props {
 
 const TopicContent: React.FC<Props> = ({ topic }) => {
 
+    const {
+        isEditing,
+        setIsEditing,
+        ref,
+        markdown,
+        setMarkdown,
+        generateContent,
+        isGeneratingContent,
+        onSave
+    } = useEditTopicContent(topic);
 
     return (
         <>
-            <ModalHeader>{topic.name}</ModalHeader>
-            <ModalCloseButton />
+            <ModalHeader>
+                <HStack
+                    w={'100%'}
+                    justifyContent={'space-between'}
+                >
+                    <Heading
+                        size={'lg'}
+                    >
+                        {topic.name}
+                    </Heading>
+                    <HStack>
+                        {
+                            isEditing ? (
+                                <>
+                                    <Button
+                                        onClick={generateContent}
+                                        colorScheme={'brand'}
+                                        variant={'outline'}
+                                        leftIcon={<FaWandMagicSparkles />}
+                                        isLoading={isGeneratingContent}
+                                    >
+                                        Generate
+                                    </Button>
+                                    <Button
+                                        onClick={() => setIsEditing(false)}
+                                        colorScheme={'brand'}
+                                        variant={'outline'}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        onClick={onSave}
+                                        colorScheme={'brand'}
+                                        isDisabled={markdown === topic.text}
+                                    >
+                                        Save
+                                    </Button>
+                                </>
+                            ) : (
+                                <Button
+                                    onClick={() => setIsEditing(true)}
+                                    colorScheme={'brand'}
+                                >
+                                    Edit
+                                </Button>
+                            )
+                        }
+                    </HStack>
+                </HStack>
+            </ModalHeader>
             <ModalBody>
-                <Editor
-                    topic={topic}
-                />
+                {
+                    isEditing ? (
+                        <Editor
+                            markdown={markdown}
+                            setMarkdown={setMarkdown}
+                            ref={ref}
+                        />
+                    ) : (
+                        <Markdown>
+                            {topic.text}
+                        </Markdown>
+                    )
+                }
+
             </ModalBody>
             <ModalFooter />
         </>
