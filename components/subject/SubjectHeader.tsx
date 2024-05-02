@@ -3,10 +3,12 @@ import React from 'react';
 import Link from "next/link";
 
 import {Button, Heading, HStack} from "@chakra-ui/react";
-import {AddIcon} from "@chakra-ui/icons";
+
+import {PiGraph} from "react-icons/pi";
+
+import AddMediaButton from "@/components/utilities/graphMedia/AddMediaButton";
 
 import {Graph} from "@/types/graph/Graph";
-import {PiGraph} from "react-icons/pi";
 
 interface Props {
     graph: Graph
@@ -22,17 +24,9 @@ const SubjectHeader: React.FC<Props> = ({ graph }) => {
                 {graph.name}
             </Heading>
             <HStack>
-                <Link
-                    href={`/subject/${graph.id}/addContent`}
-                >
-                    <Button
-                        leftIcon={<AddIcon />}
-                        colorScheme={'brand'}
-                        variant={'outline'}
-                    >
-                        Add Knowledge
-                    </Button>
-                </Link>
+                <AddMediaButton
+                    graphId={graph.id}
+                />
                 <Link href={`/subject/${graph.id}/graph`}>
                     <Button
                         colorScheme={'brand'}

@@ -1,9 +1,4 @@
-import {
-        newEdgeDescription,
-        newTopicDescription,
-        updatedTopicDescription,
-        updateGraphSchema
-} from "@/llm/data/graphUpdates";
+import { updateGraphSchema } from "@/llm/data/graphUpdates";
 
 import {GraphRow} from "@/db/types/GraphRow";
 import {TopicRow} from "@/db/types/TopicRow";
@@ -67,9 +62,9 @@ Topic updates MUST BE based on an existing topic.
 
 New edges can be between two existing topics, between an existing topic and a new topic, or between two new topics.
 
+All content should be in markdown format and should break the concepts down into smaller, more digestible pieces.
+
 Your JSON response must follow this format:
 
 ${JSON.stringify(updateGraphSchema)}
 `
-
-"In addition to the existing description, DFS explores nodes and branches deeply before backtracking, as depicted in the included visual reference. For example, it completes the entirety of the left subtree (nodes 1 -> 2 -> 3 -> 4) before switching to the right subtree, thereby maintaining a depth-focused traversal method. [Visual Example](https://chatedustorage.blob.core.windows.net/images/1714592974100.jpg)"

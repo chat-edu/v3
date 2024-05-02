@@ -7,7 +7,7 @@ import {StringifiedGraphUpdate} from "@/llm/types/graphUpdates/GraphUpdate";
 
 export const newTopicDescription: Stringified<NewTopic> = {
     name: "string: The name of the new topic",
-    text: "string: The content of the new topic"
+    text: "string: The markdown content of the new topic"
 }
 
 export const newEdgeDescription: Stringified<NewEdge> = {
@@ -17,7 +17,7 @@ export const newEdgeDescription: Stringified<NewEdge> = {
 
 export const updatedTopicDescription: Stringified<UpdatedTopic> = {
     name: "string: The name of the topic",
-    updatedText: "string: The content to append to the topic content"
+    updatedText: "string: The markdown content to append to the topic content"
 }
 
 export const updateGraphSchema: StringifiedGraphUpdate = {

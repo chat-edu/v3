@@ -1,14 +1,13 @@
 import React from 'react';
 
-import {Button, Card, Heading, Skeleton, Text, VStack} from "@chakra-ui/react";
+import {Card, Heading, HStack, Skeleton, Text, VStack} from "@chakra-ui/react";
+
+import GraphMediaList from "@/components/utilities/graphMedia/GraphMediaList";
+import AddMediaButton from "@/components/utilities/graphMedia/AddMediaButton";
 
 import useGraphMedia from "@/hooks/queries/graphMedia/useGraphMedia";
 
 import {Graph} from "@/types/graph/Graph";
-import GraphMediaList from "@/components/utilities/graphMedia/GraphMediaList";
-import {AddIcon} from "@chakra-ui/icons";
-import Link from "next/link";
-
 
 interface Props {
     graphId: Graph['id'];
@@ -28,11 +27,19 @@ const GraphMediaFiles: React.FC<Props> = ({ graphId }) => {
                 w={'100%'}
                 alignItems={'start'}
             >
-                <Heading
-                    size={'lg'}
+                <HStack
+                    w={'100%'}
+                    justifyContent={'space-between'}
                 >
-                    Knowledge Files
-                </Heading>
+                    <Heading
+                        size={'lg'}
+                    >
+                        Knowledge Files
+                    </Heading>
+                    <AddMediaButton
+                        graphId={graphId}
+                    />
+                </HStack>
                 <Text
                     fontSize={'sm'}
                     color={'gray.500'}
@@ -54,18 +61,6 @@ const GraphMediaFiles: React.FC<Props> = ({ graphId }) => {
                         <GraphMediaList
                             graphMediaList={graphMedia}
                         />
-                        <Link
-                            href={`/subject/${graphId}/addContent`}
-                            style={{ width: '100%' }}
-                        >
-                            <Button
-                                leftIcon={<AddIcon />}
-                                colorScheme={'brand'}
-                                w={'100%'}
-                            >
-                                Add Content
-                            </Button>
-                        </Link>
                     </Card>
                 )
             }
