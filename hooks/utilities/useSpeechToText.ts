@@ -1,10 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import {newRecognizer} from "@/services/speech/speechToText/config";
 import {CancellationDetails, CancellationReason, ResultReason} from "microsoft-cognitiveservices-speech-sdk";
 
-const useRecordVoice = (setText: (text: string) => void) => {
-    // State to hold the media recorder instance
-    const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+const useSpeechToText = (setText: (text: string) => void) => {
 
     // State to track whether recording is currently in progress
     const [isRecording, setIsRecording] = useState(false);
@@ -12,12 +10,16 @@ const useRecordVoice = (setText: (text: string) => void) => {
     // Ref to store audio chunks during recording
     const chunks = useRef<Blob[]>([]);
 
+    const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+
     // Function to start the recording
-    const startRecording = () => {
-        if (mediaRecorder) {
-            mediaRecorder.start();
-            setIsRecording(true);
-        }
+    const startRecording = async () => {
+        const mediaDevices = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = createRecorder(mediaDevices);
+        if(!mediaRecorder) return;
+        mediaRecorder.start();
+        setMediaRecorder(mediaRecorder);
+        setIsRecording(true);
     };
 
     // Function to stop the recording
@@ -25,11 +27,12 @@ const useRecordVoice = (setText: (text: string) => void) => {
         if (mediaRecorder) {
             mediaRecorder.stop();
             setIsRecording(false);
+            mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            setMediaRecorder(null);
         }
     };
 
-    // Function to initialize the media recorder with the provided stream
-    const initialMediaRecorder = (stream: MediaStream) => {
+    const createRecorder = (stream: MediaStream) => {
         let options: MediaRecorderOptions = {};
         if (MediaRecorder.isTypeSupported('audio/wav')) {
             options = { mimeType: 'audio/wav' };
@@ -73,18 +76,10 @@ const useRecordVoice = (setText: (text: string) => void) => {
             });
         };
 
-        setMediaRecorder(mediaRecorder);
+        return mediaRecorder;
     };
-
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            navigator.mediaDevices
-                .getUserMedia({ audio: true })
-                .then(initialMediaRecorder);
-        }
-    }, []);
 
     return { isRecording, startRecording, stopRecording };
 };
 
-export default useRecordVoice;
+export default useSpeechToText;
