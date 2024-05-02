@@ -63,6 +63,15 @@ CREATE TABLE Videos (
     FOREIGN KEY (media_id) REFERENCES GraphMedia(id) ON DELETE CASCADE
 );
 
+CREATE TABLE GraphUpdates (
+    media_id SERIAL PRIMARY KEY,
+    updates JSON NOT NULL,
+    FOREIGN KEY (media_id) REFERENCES GraphMedia(id) ON DELETE CASCADE
+);
+
+-- get the graphmedia with id 23
+SELECT * FROM GraphMedia WHERE id = 23;
+
 
 CREATE TABLE QuestionSubmissions (
     id SERIAL PRIMARY KEY,

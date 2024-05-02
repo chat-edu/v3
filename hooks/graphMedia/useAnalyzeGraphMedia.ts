@@ -14,7 +14,6 @@ const useAnalyzeGraphMedia = (graphMedia: GraphMedia) => {
     const onAnalyze = async () => {
         setIsLoading(true);
         const result = await analyzeMedia(graphMedia);
-        console.log(result);
         if(result) {
             toast({
                 title: "Media analyzed",

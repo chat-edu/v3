@@ -14,7 +14,6 @@ export const addTopic = async (topic: TopicRowInput): Promise<TopicRow | null> =
 export const addFromNewTopic = async (graph_id: Graph["id"], topic: NewTopic): Promise<TopicRow | null> => {
     const existingTopic = await getTopicByName(topic.name, graph_id);
     if(existingTopic) return existingTopic;
-    console.log("Adding new topic", topic.name, "to graph", graph_id);
     return addTopic({
         graph_id,
         name: topic.name,
@@ -48,14 +47,12 @@ export const updateTopic = async (id: TopicRow["id"], updatedFields: Partial<Top
 export const updateFromTopicUpdate = async (graph_id: Graph["id"], topic: UpdatedTopic): Promise<boolean> => {
     const existingTopic = await getTopicByName(topic.name, graph_id);
     if(!existingTopic) {
-        console.log("Adding new topic", topic.name, "to graph", graph_id);
         return (await addTopic({
             graph_id,
             name: topic.name,
             text: topic.updatedText
         })) !== null;
     } else {
-        console.log("Updating topic", topic.name);
         return updateTopic(existingTopic.id, {
             text: existingTopic.text + topic.updatedText
         });

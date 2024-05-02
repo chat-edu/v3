@@ -24,6 +24,7 @@ import Link from "next/link";
 import {GraphMedia as GraphMediaType} from "@/types/graph/GraphMedia";
 import {GraphMediaTypes} from "@/db/types/GraphMediaRow";
 import DeleteMediaButton from "@/components/utilities/graphMedia/DeleteMediaButton";
+import Index from "@/components/utilities/graphMedia/GraphUpdates";
 
 interface Props {
     graphMedia: GraphMediaType,
@@ -48,6 +49,9 @@ const GraphMediaBase: React.FC<Props> = ({ graphMedia, analyzeButton, modalConte
                     <ModalCloseButton />
                     <ModalBody>
                         {modalContent}
+                        {
+                            graphMedia.processed ? <Index media={graphMedia} /> : null
+                        }
                     </ModalBody>
                     <ModalFooter>
                         <HStack
@@ -86,6 +90,7 @@ const GraphMediaBase: React.FC<Props> = ({ graphMedia, analyzeButton, modalConte
                 }}
                 cursor={'pointer'}
                 onClick={onOpen}
+                transition={'all 0.2s ease-in-out'}
             >
                 <HStack
                     spacing={4}

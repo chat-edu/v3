@@ -4,7 +4,7 @@ import {NextPageContext} from "next";
 
 import Layout from "@/components/layout";
 import Loading from "@/components/utilities/Loading";
-import AddContent from "@/components/subject/addContent";
+import AddContent from "../../../components/addContent";
 
 const AddContentSubjectPage = ({ subjectId } : {subjectId: string}) => {
     return (

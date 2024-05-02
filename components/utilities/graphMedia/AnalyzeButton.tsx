@@ -23,7 +23,10 @@ const AnalyzeButton: React.FC<Props> = ({ graphMedia, isDisabled, isMediaLoading
             leftIcon={<PiGraph />}
             flexShrink={0}
             isLoading={isLoading || isMediaLoading}
-            onClick={onAnalyze}
+            onClick={(e) => {
+                e.stopPropagation();
+                onAnalyze();
+            }}
             isDisabled={isDisabled}
         >
             Analyze

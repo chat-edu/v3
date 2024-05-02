@@ -40,7 +40,10 @@ const AnalyzeVideoButton: React.FC<Props> = ({ graphMedia }) => {
                 leftIcon={<PiGraph />}
                 flexShrink={0}
                 isLoading={isLoading || isVideoProcessingLoading}
-                onClick={onAnalyze}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    onAnalyze();
+                }}
                 isDisabled={isVideoProcessing}
             >
                 Analyze

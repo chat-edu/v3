@@ -6,5 +6,6 @@ export const TASK_TOPICS_TABLE = 'TaskTopics';
 export const TOPIC_EDGES_TABLE = 'TopicEdges';
 export const GRAPH_MEDIA_TABLE = 'GraphMedia';
 export const VIDEOS_TABLE = 'Videos';
+export const GRAPH_UPDATES_TABLE = 'GraphUpdates';
 export const MULTIPLE_CHOICE_QUESTIONS_TABLE = 'MultipleChoiceQuestions';
 export const FREE_RESPONSE_QUESTIONS_TABLE = 'FreeResponseQuestions';

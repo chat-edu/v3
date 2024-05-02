@@ -19,6 +19,7 @@ import {GraphRow} from "@/db/types/GraphRow";
 import {TopicRow} from "@/db/types/TopicRow";
 import {TopicEdgeRow} from "@/db/types/TopicEdgeRow";
 import {MediaIdParams} from "@/app/api/graphMedia/[mediaId]/MediaIdParams";
+import {addGraphUpdate} from "@/db/services/graphUpdates";
 
 export const maxDuration = 300;
 
@@ -63,7 +64,14 @@ export const POST = async (req: Request, { params }: { params: MediaIdParams}) =
     await updateGraphMedia(graphMediaRow.id, {
         processed: true,
     });
-    return Response.json(graphUpdate, {status: 200});
+    const graphUpdateRow = await addGraphUpdate({
+        media_id: graphMediaRow.id,
+        updates: (graphUpdate),
+    })
+
+    if(!graphUpdateRow) return new Response(null, {status: 500});
+
+    return Response.json(graphUpdateRow, {status: 200});
 }
 
 const analyzeImage = async (graph: GraphRow, topics: TopicRow[], edges: TopicEdgeRow[], imageUrl: string) => {

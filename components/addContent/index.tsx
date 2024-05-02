@@ -7,11 +7,11 @@ import {
     VStack
 } from "@chakra-ui/react";
 
-import UploadCard from "@/components/subject/addContent/UploadCard";
+import UploadCard from "@/components/addContent/UploadCard";
 
 import {Graph} from "@/types/graph/Graph";
-import UnprocessedMedia from "@/components/subject/addContent/UnprocessedMedia";
-import ProcessedMedia from "@/components/subject/addContent/ProcessedMedia";
+import UnprocessedMedia from "@/components/addContent/UnprocessedMedia";
+import ProcessedMedia from "@/components/addContent/ProcessedMedia";
 
 interface Props {
     graphId: Graph['id'];

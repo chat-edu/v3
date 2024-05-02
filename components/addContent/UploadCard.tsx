@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Button, Card, Heading, Text, useDisclosure, VStack} from "@chakra-ui/react";
 
-import UploadModal from "@/components/subject/addContent/UploadModal";
+import UploadModal from "@/components/addContent/UploadModal";
 
 import {Graph} from "@/types/graph/Graph";
 
