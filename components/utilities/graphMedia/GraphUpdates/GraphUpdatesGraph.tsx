@@ -23,8 +23,6 @@ const GraphUpdatesGraph: React.FC<Props> = ({ graphUpdate }) => {
         edges
     } = useGraphUpdateGraph(graphUpdate.updates);
 
-    console.log(nodes, edges);
-
     return (
         <Box
             w={'100%'}

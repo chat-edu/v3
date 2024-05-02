@@ -1,5 +1,6 @@
 import {TaskRow, TaskRowInput} from "@/db/types/TaskRow";
 import {emitSubjectTasksChangedEvent} from "@/events/subjectTasksChanged";
+import {emitTaskChangedEvent} from "@/events/taskChanged";
 
 export const createTask = async (taskInput: TaskRowInput) =>
     fetch("/api/tasks", {
@@ -18,3 +19,16 @@ export const createTask = async (taskInput: TaskRowInput) =>
         return null;
     })
     .catch(() => null);
+
+export const completeTask = async (taskId: TaskRow["id"]) =>
+    fetch(`/api/tasks/${taskId}/complete`, {
+        method: "POST"
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data) {
+            emitTaskChangedEvent(taskId);
+        }
+        return data as boolean
+    })
+    .catch(() => false);

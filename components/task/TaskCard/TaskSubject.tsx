@@ -4,7 +4,7 @@ import {Skeleton, Text} from "@chakra-ui/react";
 
 import useGraph from "@/hooks/queries/graphs/useGraph";
 
-import {Task} from "@/types/Task";
+import {Task} from "@/types/task/Task";
 
 interface Props {
     task: Task

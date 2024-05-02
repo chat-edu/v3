@@ -1,11 +1,14 @@
-import {QuestionRowInput} from "@/db/types/questions/Question";
+import {QuestionSubmissionRow} from "@/db/types/questions/Question";
 
-export interface FreeResponseQuestionRowInput extends QuestionRowInput {
+export enum FreeResponseQuestionTypes {
+    Understanding = "understanding",
+    Application = "application",
+}
+
+export interface FreeResponseSubmissionRow {
+    question_id: QuestionSubmissionRow["id"];
     answer: string;
-    correct: boolean;
-    explanation: string;
+    type: FreeResponseQuestionTypes;
 }
 
-export interface FreeResponseQuestionRow extends FreeResponseQuestionRowInput {
-    id: number;
-}
+export interface FreeResponseQuestionSubmissionRow extends QuestionSubmissionRow, FreeResponseSubmissionRow {}

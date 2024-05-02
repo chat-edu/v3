@@ -39,7 +39,6 @@ const useSpeechToText = (setText: (text: string) => void) => {
         } else if (MediaRecorder.isTypeSupported('audio/webm')) {
             options = { mimeType: 'audio/webm' };
         } else {
-            console.error('No supported audio type found.');
             return;
         }
 

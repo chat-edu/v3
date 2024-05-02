@@ -1,12 +1,5 @@
-import {
-    answerCorrectnessDefaults,
-    applicationQuestionCommand, getCommandFormat,
-    multipleChoiceCommand,
-    understandingQuestionCommand
-} from "@/llm/prompts/commands";
-
 import {Topic} from "@/types/graph/Topic";
-import {Task} from "@/types/Task";
+import {Task} from "@/types/task/Task";
 
 export const taskSystemMessage = (task: Task, topics: Topic[]) => `
 You are acting as a copilot for a student who is trying to achieve the following task: ${task.text}

@@ -1,8 +1,8 @@
 import React, {createContext, ReactNode, useContext, useState} from "react";
-import {Task} from "@/types/Task";
+
+import {Task} from "@/types/task/Task";
 import {Topic} from "@/types/graph/Topic";
 import {TopicEdge} from "@/types/graph/TopicEdge";
-import useTaskAndTopics from "@/hooks/task/useTaskAndTopics";
 
 interface TaskContextType {
     task: Task;
@@ -35,14 +35,15 @@ export const useTaskContext = () => useContext(TaskContext);
 interface TaskContextProps {
     task: Task;
     taskTopics: Topic[];
+    initialCorrectAnswersByTopic: number[];
     taskEdges: TopicEdge[];
     children: ReactNode;
 }
 
-export const TaskContextProvider: React.FC<TaskContextProps> = ({ task, taskTopics, taskEdges, children }) => {
+export const TaskContextProvider: React.FC<TaskContextProps> = ({ task, taskTopics, taskEdges, children, initialCorrectAnswersByTopic }) => {
 
     const [currentTopicIndex, setCurrentTopicIndex] = useState<number>(0);
-    const [correctAnswersByTopic, setCorrectAnswersByTopic] = useState<number[]>([]);
+    const [correctAnswersByTopic, setCorrectAnswersByTopic] = useState<number[]>(initialCorrectAnswersByTopic);
 
     return (
         <TaskContext.Provider

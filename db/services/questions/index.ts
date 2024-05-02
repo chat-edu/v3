@@ -1,2 +1,3 @@
-export * from "./freeResponseQuestions";
-export * from "./multipleChoiceQuestions";
+export * from "./questionSubmissions";
+export * from "./freeResponseSubmissions";
+export * from "./multipleChoiceSubmissions";

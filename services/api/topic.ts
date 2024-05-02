@@ -1,9 +1,10 @@
-import {Topic} from "@/types/graph/Topic";
 
 import {TopicRow, TopicRowInput} from "@/db/types/TopicRow";
 import {emitGraphTopicsChangedEvent} from "@/events/graphTopicsChanged";
 import {Graph} from "@/types/graph/Graph";
 import {emitTopicChangedEvent} from "@/events/topicChanged";
+import {User} from "@/types/User";
+import {QuestionSubmission} from "@/types/questions";
 
 export const createTopic = async (topic: TopicRowInput) =>
     fetch(`/api/topics/graph/${topic.graph_id}`, {
@@ -22,7 +23,7 @@ export const createTopic = async (topic: TopicRowInput) =>
                 return null
             }
         })
-        .catch((err) => null);
+        .catch(() => null);
 
 export const updateTopic = async (topicId: TopicRow["id"], updatedFields: { text?: string, name?: string}) =>
     fetch(`/api/topics/${topicId}`, {
@@ -41,7 +42,7 @@ export const updateTopic = async (topicId: TopicRow["id"], updatedFields: { text
                 return false
             }
         })
-        .catch((err) => false);
+        .catch(() => false);
 
 export const deleteTopic = async (topicId: TopicRow["id"], graphId: Graph["id"]) =>
     fetch(`/api/topics/${topicId}`, {
@@ -60,7 +61,7 @@ export const generateSubtopics = async (topicId: TopicRow["id"]) =>
     })
         .then((res) => res.json())
         .then((data: {subtopics: string[]}) => data.subtopics as string[])
-        .catch((err) => []);
+        .catch(() => []);
 
 export const generateContent = async (topicId: TopicRow["id"]) =>
     fetch(`/api/topics/${topicId}/generate/content`, {
@@ -68,6 +69,14 @@ export const generateContent = async (topicId: TopicRow["id"]) =>
     })
         .then((res) => res.json())
         .then((data: {generatedContent: string}) => data.generatedContent as string)
-        .catch((err) => "");
+        .catch(() => "");
+
+export const getLastThreeQuestions = async (userId: User["id"], topicId: TopicRow["id"]) =>
+    fetch(`/api/questions/user/${userId}/topic/${topicId}`, {
+        method: "GET",
+    })
+        .then((res) => res.json())
+        .then((data) => data as QuestionSubmission[])
+        .catch(() => [] as QuestionSubmission[]);
 
 export const newTopicId = () => Math.round(Math.random() * 1000000)

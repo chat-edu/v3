@@ -1,4 +1,4 @@
-import {Task} from "@/types/Task";
+import {Task} from "@/types/task/Task";
 import {Topic} from "@/types/graph/Topic";
 
 export const topicSystemMessage = (task: Task, topic: Topic) => `

@@ -1,11 +1,11 @@
-import {FormEvent, useEffect, useState} from "react";
+import {FormEvent, useEffect, useRef, useState} from "react";
 
 import {Message, nanoid} from "ai";
 import {useChat} from "ai/react";
 
 import {useTaskContext} from "@/contexts/TaskContext";
 
-import {questionResponseTagSuffix, ResponseTags} from "@/llm/prompts/commands/tags";
+import {CommandTags, questionResponseTagSuffix, ResponseTags} from "@/llm/prompts/commands/tags";
 import {
     answerCorrectnessCommand, applicationQuestionCommand,
     getPrePrompt,
@@ -19,6 +19,9 @@ import {topicSystemMessage} from "@/llm/prompts/tasks/topicSystemMessage";
 
 import {Command, CommandTypes} from "@/types/commands/Command";
 import useImageInput from "@/hooks/utilities/useImageInput";
+import {addQuestionFromMessage} from "@/services/api/questions";
+import useAuth from "@/hooks/useAuth";
+import {taskComplete} from "@/llm/prompts/tasks/taskCompletePrompt";
 
 export enum AnswerStates {
     CORRECT,
@@ -27,6 +30,8 @@ export enum AnswerStates {
 }
 
 const useTaskChat = () => {
+
+    const { user } = useAuth();
 
     const {
         currentTopicIndex,
@@ -40,6 +45,7 @@ const useTaskChat = () => {
     const [promptType, setPromptType] = useState<CommandTypes>(CommandTypes.REGULAR);
 
     const [currentQuestion, setCurrentQuestion] = useState<Message | null>(null);
+    const currentAnswer = useRef<string | null>(null);
 
     const [answerMapping, setAnswerMapping] = useState<{[key: string]: AnswerStates}>({});
 
@@ -61,12 +67,24 @@ const useTaskChat = () => {
         }
         // If the message is an answer correctness response, set the answer mapping
         else if(message.content.includes(ResponseTags.ANSWER_CORRECTNESS)) {
+            if(!currentQuestion || !user) return;
             const correct = JSON.parse(message.content).content.correct;
             setAnswerMapping({
                 ...answerMapping,
-                [currentQuestion?.id || ""]: correct ? AnswerStates.CORRECT : AnswerStates.INCORRECT
+                [currentQuestion.id || ""]: correct ? AnswerStates.CORRECT : AnswerStates.INCORRECT
             })
+            if(currentAnswer.current) {
+                addQuestionFromMessage(
+                    user.id,
+                    taskTopics[currentTopicIndex].id,
+                    task.id,
+                    currentQuestion,
+                    currentAnswer.current,
+                    message
+                )
+            }
             setCurrentQuestion(null);
+            currentAnswer.current = null;
             setCorrectAnswersByTopic([
                 ...correctAnswersByTopic.slice(0, currentTopicIndex),
                 correct ? correctAnswersByTopic[currentTopicIndex] + 1 : 0,
@@ -131,11 +149,9 @@ const useTaskChat = () => {
         setCurrentQuestion(null);
         setAnswerMapping({});
         setPromptType(CommandTypes.REGULAR);
-        setCorrectAnswersByTopic([0]);
     }, [task]);
 
     useEffect(() => {
-        if(correctAnswersByTopic.length === 0) return;
         if(correctAnswersByTopic[currentTopicIndex] === 3) {
             setCurrentTopicIndex(currentTopicIndex + 1);
         }
@@ -160,16 +176,30 @@ const useTaskChat = () => {
     }
 
     useEffect(() => {
-        if(currentTopicIndex === 0 || currentTopicIndex === taskTopics.length) return;
-        setMessages([
-            ...messages,
-            {
-                role: 'system',
-                id: nanoid(),
-                content: topicSystemMessage(task, taskTopics[currentTopicIndex])
-            }
-        ]);
-        setCorrectAnswersByTopic([...correctAnswersByTopic, 0]);
+        if(currentTopicIndex === 0) return;
+        if(currentTopicIndex === taskTopics.length - 1) {
+            setMessages([
+                ...messages,
+                {
+                    role: 'assistant',
+                    id: nanoid(),
+                    content:  JSON.stringify({
+                        tag: ResponseTags.PLAIN_TEXT,
+                        content: taskComplete(task)
+                    })
+                }
+            ]);
+        } else {
+            setMessages([
+                ...messages,
+                {
+                    role: 'system',
+                    id: nanoid(),
+                    content: topicSystemMessage(task, taskTopics[currentTopicIndex])
+                }
+            ]);
+            setCorrectAnswersByTopic([...correctAnswersByTopic, 0]);
+        }
     }, [currentTopicIndex]);
 
     const scrollToBottom = () => {
@@ -190,6 +220,9 @@ const useTaskChat = () => {
             setPromptType(CommandTypes.REGULAR)
         } else if(command.promptType !== CommandTypes.HINT) {
             setPromptType(command.promptType);
+        }
+        if(command.promptTag === CommandTags.ANSWER_CORRECTNESS) {
+            currentAnswer.current = command.promptContent;
         }
         setMessages([
             ...messages,

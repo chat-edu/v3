@@ -39,6 +39,12 @@ CREATE TABLE Tasks (
     FOREIGN KEY (creator_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
+CREATE TABLE TaskSummaries (
+    task_id INTEGER PRIMARY KEY,
+    summary TEXT NOT NULL,
+    FOREIGN KEY (task_id) REFERENCES Tasks(id) ON DELETE CASCADE
+);
+
 CREATE TABLE TaskTopics (
     task_id INTEGER,
     topic_id INTEGER,
@@ -77,20 +83,24 @@ CREATE TABLE QuestionSubmissions (
     id SERIAL PRIMARY KEY,
     user_id VARCHAR(255) NOT NULL,
     topic_id INT,
+    task_id INT,
     question TEXT NOT NULL,
     correct BOOLEAN,
     explanation TEXT,
     timestamp TIMESTAMP NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+    question_type VARCHAR(255) NOT NULL CHECK(question_type in ('free_response', 'multiple_choice')),
+    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
+    FOREIGN KEY (topic_id) REFERENCES Topics(id)
 );
 
-CREATE TABLE FreeResponseQuestionSubmissions (
+CREATE TABLE FreeResponseSubmissions (
     question_id SERIAL PRIMARY KEY,
+    type VARCHAR(255) NOT NULL CHECK(type in ('understanding', 'application')),
     answer TEXT NOT NULL,
     FOREIGN KEY (question_id) REFERENCES QuestionSubmissions(id) ON DELETE CASCADE
 );
 
-CREATE TABLE MultipleChoiceQuestions (
+CREATE TABLE MultipleChoiceSubmissions (
     question_id SERIAL PRIMARY KEY,
     option_a TEXT,
     option_b TEXT,

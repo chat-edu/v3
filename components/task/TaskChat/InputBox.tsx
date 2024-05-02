@@ -22,6 +22,7 @@ import {useTaskContext} from "@/contexts/TaskContext";
 import SpeechToText from "@/components/utilities/SpeechToText";
 import {FaImage} from "react-icons/fa6";
 import AddedImage from "@/components/task/TaskChat/AddedImage";
+import CompleteTaskButton from "@/components/task/TaskChat/CompleteTaskButton";
 
 interface Props {
     value: string,
@@ -43,7 +44,7 @@ interface Props {
 
 const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, setInput, handleSubmit, nextQuestion, skipTopic, promptType, handleImagesChange, images, removeImage  }) => {
 
-    const { taskTopics, currentTopicIndex, correctAnswersByTopic } = useTaskContext();
+    const { task, taskTopics, currentTopicIndex, correctAnswersByTopic } = useTaskContext();
 
     const inputBoxColor = useColorModeValue("white", "#2D2D2D");
 
@@ -180,27 +181,35 @@ const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, setIn
                         }
                     </HStack>
                 </form>
-                <HStack
-                    w={'100%'}
-                    spacing={4}
-                >
-                    <Button
-                        flex={1}
-                        onClick={nextQuestion}
-                        colorScheme={'brand'}
-                        isDisabled={promptType !== CommandTypes.REGULAR || isLoading}
-                    >
-                        Next Question
-                    </Button>
-                    <Button
-                        flex={1}
-                        onClick={skipTopic}
-                        variant={'outline'}
-                        isDisabled={promptType !== CommandTypes.REGULAR || isLoading}
-                    >
-                        Skip Topic
-                    </Button>
-                </HStack>
+                {
+                    currentTopicIndex === taskTopics.length - 1 ? (
+                        <CompleteTaskButton
+                            taskId={task.id}
+                        />
+                    ) : (
+                        <HStack
+                            w={'100%'}
+                            spacing={4}
+                        >
+                            <Button
+                                flex={1}
+                                onClick={nextQuestion}
+                                colorScheme={'brand'}
+                                isDisabled={promptType !== CommandTypes.REGULAR || isLoading}
+                            >
+                                Next Question
+                            </Button>
+                            <Button
+                                flex={1}
+                                onClick={skipTopic}
+                                variant={'outline'}
+                                isDisabled={promptType !== CommandTypes.REGULAR || isLoading}
+                            >
+                                Skip Topic
+                            </Button>
+                        </HStack>
+                    )
+                }
             </Card>
         </Flex>
     );

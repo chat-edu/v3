@@ -3,12 +3,13 @@ import React, {ComponentType} from 'react';
 import {Handle, NodeProps, Position} from "reactflow";
 
 import {Card, Text, useDisclosure} from "@chakra-ui/react";
+import {transparentize} from "@chakra-ui/theme-tools";
 
 import TopicContentModal from "@/components/graph/topicContentModal";
 
-import {Topic as TopicNodeType} from "@/types/graph/Topic";
 import {useTaskContext} from "@/contexts/TaskContext";
-import {transparentize} from "@chakra-ui/theme-tools";
+
+import {Topic as TopicNodeType} from "@/types/graph/Topic";
 
 export const nodeWidth = 200;
 export const nodeHeight = 100;

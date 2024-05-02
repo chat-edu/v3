@@ -39,6 +39,13 @@ export const updateTask = async (id: TaskRow["id"], text: string): Promise<boole
     });
 };
 
+export const updateTaskCompleted = async (id: TaskRow["id"], completed: boolean): Promise<boolean> => {
+    return update<Partial<TaskRow>, TaskRow>(TASKS_TABLE, [id], {
+        completed
+    });
+
+}
+
 // DELETE
 
 export const deleteTask = async (id: TaskRow["id"]): Promise<boolean> => {

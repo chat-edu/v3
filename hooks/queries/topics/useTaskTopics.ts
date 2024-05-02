@@ -1,7 +1,7 @@
 import useRows from "@/hooks/queries/base/useRows";
 import adaptTopic from "@/hooks/queries/topics/adapter";
 
-import {Task} from "@/types/Task";
+import {Task} from "@/types/task/Task";
 
 const useTaskTopics = (taskId: Task["id"]) => {
     const [

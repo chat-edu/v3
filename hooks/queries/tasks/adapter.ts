@@ -1,5 +1,5 @@
 import {TaskRow} from "@/db/types/TaskRow";
-import {Task} from "@/types/Task";
+import {Task} from "@/types/task/Task";
 
 const adaptTask = (task: TaskRow): Task => ({
     id: task.id,
