@@ -37,6 +37,9 @@ const Graph = () => {
                 zoomOnDoubleClick={false}
                 panOnScroll={false}
                 panOnDrag={false}
+                proOptions={{
+                    hideAttribution: true,
+                }}
             />
         </Box>
     );

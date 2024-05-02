@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Box, Flex, Text} from "@chakra-ui/react";
+import {Flex, Text} from "@chakra-ui/react";
 
 import {Background, ReactFlow} from "reactflow";
 
@@ -48,6 +48,9 @@ const TaskGraph: React.FC = () => {
                 zoomOnDoubleClick={false}
                 fitView
                 nodeTypes={nodeTypes}
+                proOptions={{
+                    hideAttribution: true,
+                }}
            >
                <Background color="#aaa" gap={16} />
           </ReactFlow>

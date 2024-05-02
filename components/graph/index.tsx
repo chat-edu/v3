@@ -58,6 +58,9 @@ const Graph: React.FC<Props> = ({ graphId }) => {
                 onConnect={onConnect}
                 fitView
                 nodeTypes={nodeTypes}
+                proOptions={{
+                    hideAttribution: true,
+                }}
             >
                 <Controls />
                 <Background color="#aaa" gap={16} />

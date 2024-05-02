@@ -36,6 +36,9 @@ const GraphUpdatesGraph: React.FC<Props> = ({ graphUpdate }) => {
                 nodesConnectable={false}
                 fitView
                 nodeTypes={nodeTypes}
+                proOptions={{
+                    hideAttribution: true,
+                }}
            >
                <Background color="#aaa" gap={16} />
           </ReactFlow>
