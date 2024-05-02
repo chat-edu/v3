@@ -12,6 +12,7 @@ import useGraph from "@/hooks/queries/graphs/useGraph";
 import useAuth from "@/hooks/useAuth";
 
 import {Graph} from "@/types/graph/Graph";
+import DeleteSubject from "@/components/subject/DeleteSubject";
 
 interface Props {
     subjectId: Graph['id']
@@ -55,11 +56,12 @@ const Subject: React.FC<Props> = ({ subjectId }) => {
                                         />
                                     )
                                 }
-                                {
-                                    <GraphMediaFiles
-                                        graphId={subjectId}
-                                    />
-                                }
+                                <GraphMediaFiles
+                                    graphId={subjectId}
+                                />
+                                <DeleteSubject
+                                    graphId={subjectId}
+                                />
                             </VStack>
                         ) : (
                             <Card>
