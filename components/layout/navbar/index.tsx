@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Card, Flex, Heading, HStack, Image} from '@chakra-ui/react'
+import {Card, Flex, Heading, HStack, Image, Text} from '@chakra-ui/react'
 
 import Link from "next/link";
 
@@ -45,9 +45,18 @@ const Navbar: React.FC = () => {
                     />
                     <Heading
                         size='md'
-                        color='brand.500'
                     >
-                        ChatEDU
+                        <Text
+                            as='span'
+                        >
+                            Chat
+                        </Text>
+                        <Text
+                            as='span'
+                            color='brand.500'
+                        >
+                            EDU
+                        </Text>
                     </Heading>
                 </HStack>
             </Link>

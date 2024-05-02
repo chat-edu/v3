@@ -32,8 +32,8 @@ const Profile: React.FC<Props> = ({ user }) => {
                 icon={
                     <Avatar
                         size={'sm'}
-                        name={user?.name || user.name || ""}
-                        src={user?.image || ""}
+                        name={user.image || user.name || ""}
+                        src={user.image || ""}
                     />
                 }
             />

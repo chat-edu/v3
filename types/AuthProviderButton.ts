@@ -1,6 +1,7 @@
 export enum AuthProviders {
     GOOGLE = "google",
     MICROSOFT = "azure-ad",
+    DEMO = "demo"
 }
 
 export interface AuthProviderButton {
