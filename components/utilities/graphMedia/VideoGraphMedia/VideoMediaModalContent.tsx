@@ -1,9 +1,8 @@
 import React from 'react';
 
-import {GraphMedia} from "@/types/graph/GraphMedia";
+import VideoRenderer from "@/components/utilities/videos/VideoRenderer";
 
-// @ts-ignore
-import { AzureMP } from '@hartmannindustries/azure-media-player'
+import {GraphMedia} from "@/types/graph/GraphMedia";
 
 interface Props {
     graphMedia: GraphMedia,
@@ -11,12 +10,8 @@ interface Props {
 
 const VideoMediaModalContent: React.FC<Props> = ({ graphMedia }) => {
     return (
-        <AzureMP
-            skin="amp-flush"
-            src={[{
-                src: graphMedia.mediaUrl,
-                type: 'video/mp4'
-            }]}
+        <VideoRenderer
+            src={graphMedia.mediaUrl}
         />
     );
 };

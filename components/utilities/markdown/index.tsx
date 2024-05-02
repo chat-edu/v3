@@ -8,9 +8,9 @@ import markdownTheme from "@/theme/markdownTheme";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 import 'katex/dist/katex.min.css';
-import "@/components/utilities/markdown/markdownStyles.css"
 
 interface Props {
     children: string
@@ -21,13 +21,17 @@ const Markdown: React.FC<Props> = ({ children }) => {
         <ReactMarkdown
             components={ChakraUIRenderer(markdownTheme)}
             className={'prose'}
-            skipHtml
             remarkPlugins={[
                 remarkMath,
                 remarkGfm
             ]}
-            // @ts-ignore
-            rehypePlugins={[rehypeKatex]}
+            rehypePlugins={[
+                // @ts-ignore
+                rehypeKatex,
+                // @ts-ignore
+                rehypeRaw
+            ]}
+            skipHtml={false}
         >
             {children}
         </ReactMarkdown>

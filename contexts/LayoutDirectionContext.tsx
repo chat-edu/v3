@@ -25,7 +25,7 @@ interface LayoutDirectionContextProps {
 
 export const LayoutDirectionProvider: React.FC<LayoutDirectionContextProps> = ({ children }) => {
 
-    const [direction, setDirection] = useState<LayoutDirections>(LayoutDirections.Vertical);
+    const [direction, setDirection] = useState<LayoutDirections>(LayoutDirections.Horizontal);
 
     const toggleDirection = useCallback(() => {
         setDirection((prev) => (prev === LayoutDirections.Vertical ? LayoutDirections.Horizontal : LayoutDirections.Vertical));

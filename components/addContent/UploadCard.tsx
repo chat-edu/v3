@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {Button, Card, Heading, Text, useDisclosure, VStack} from "@chakra-ui/react";
+import {Card, Heading, Text, VStack} from "@chakra-ui/react";
 
-import UploadModal from "@/components/addContent/UploadModal";
+import AddMedia from "@/components/utilities/graphMedia/AddMedia";
 
 import {Graph} from "@/types/graph/Graph";
 
@@ -12,15 +12,8 @@ interface Props {
 
 const UploadCard: React.FC<Props> = ({ graphId }) => {
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
-
     return (
         <>
-            <UploadModal
-                isOpen={isOpen}
-                onClose={onClose}
-                graphId={graphId}
-            />
             <Card
                 p={4}
                 w={'100%'}
@@ -31,23 +24,23 @@ const UploadCard: React.FC<Props> = ({ graphId }) => {
                     w={'100%'}
                     alignItems={'flex-start'}
                 >
-                    <Heading
-                        size={'lg'}
-                    >
-                        Add Knowledge Files
-                    </Heading>
-                    <Text
-                        fontWeight={'semibold'}
-                    >
-                        Add PDFs, images, videos, or text to your knowledge graph.
-                    </Text>
-                    <Button
-                        colorScheme={'brand'}
+                    <VStack
+                        spacing={0}
                         w={'100%'}
-                        onClick={onOpen}
+                        alignItems={'flex-start'}
                     >
-                        Upload
-                    </Button>
+                        <Heading
+                            size={'lg'}
+                        >
+                            Add Knowledge Files
+                        </Heading>
+                        <Text
+                            opacity={0.8}
+                        >
+                            Add lectures, notes, images, problem sets, videos, and more to your knowledge graph.
+                        </Text>
+                    </VStack>
+                    <AddMedia graphId={graphId} />
                 </VStack>
             </Card>
         </>

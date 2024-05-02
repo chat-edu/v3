@@ -145,7 +145,7 @@ const markdownTheme: Components = {
                 {props.children}
             </Td>
         )
-    }
+    },
 };
 
 export default markdownTheme;
