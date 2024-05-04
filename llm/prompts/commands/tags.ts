@@ -9,6 +9,7 @@ export enum ResponseTags {
     HINT = `Hint Response`,
     PLAIN_TEXT = `Plain Text Response`,
     DONT_KNOW = `Don't Know Response`,
+    NEXT_TOPIC = `Next Topic Response`
 }
 
 export enum CommandTags {

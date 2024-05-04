@@ -110,3 +110,6 @@ CREATE TABLE MultipleChoiceSubmissions (
     answer CHAR(1) CHECK(answer IN ('A', 'B', 'C', 'D')),
     FOREIGN KEY (question_id) REFERENCES QuestionSubmissions(id) ON DELETE CASCADE
 );
+
+-- get all question submissions for a user
+SELECT * FROM FreeResponseSubmissions;

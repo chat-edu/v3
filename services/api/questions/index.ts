@@ -53,8 +53,13 @@ export const addQuestionFromMessage = async (
                 questionType: QuestionTypes.MultipleChoice,
                 taskId
             });
-        case ResponseTags.APPLICATION || ResponseTags.UNDERSTANDING:
+        case ResponseTags.APPLICATION:
+        case ResponseTags.UNDERSTANDING:
             const frq = parsedQuestionMessage.content as TextBasedQuestion;
+            console.log(frq.question, answer, parsedAnswerCorrectnessMessage.correct, parsedAnswerCorrectnessMessage.explanation);
+            console.log(parsedQuestionMessage.type === ResponseTags.APPLICATION
+                ? FreeResponseQuestionTypes.Application
+                : FreeResponseQuestionTypes.Understanding)
             return await addFreeResponseQuestion({
                 userId,
                 topicId,

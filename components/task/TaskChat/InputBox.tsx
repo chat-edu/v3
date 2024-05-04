@@ -182,7 +182,7 @@ const InputBox: React.FC<Props> = ({ value, isLoading, stop, handleChange, setIn
                     </HStack>
                 </form>
                 {
-                    currentTopicIndex === taskTopics.length - 1 ? (
+                    currentTopicIndex === taskTopics.length - 1 && correctAnswersByTopic[currentTopicIndex] === 3 ? (
                         <CompleteTaskButton
                             taskId={task.id}
                         />

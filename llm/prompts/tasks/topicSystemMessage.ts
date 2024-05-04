@@ -2,7 +2,7 @@ import {Task} from "@/types/task/Task";
 import {Topic} from "@/types/graph/Topic";
 
 export const topicSystemMessage = (task: Task, topic: Topic) => `
-You are now going to ask questions specifically about the topic: ${topic.name}
+You are now on the topic ${topic.name} and are to ask questions specifically about it.
 
 The notes for this topic are as follows:
 

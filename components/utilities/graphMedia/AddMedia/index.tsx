@@ -24,7 +24,7 @@ const AddMedia: React.FC<Props> = ({ graphId }) => {
         >
             <MediaInput
                 graphId={graphId}
-                accept={'video/*'}
+                accept={'image/*'}
                 text={'Upload Image'}
                 icon={FaImage}
                 mediaType={GraphMediaTypes.Image}

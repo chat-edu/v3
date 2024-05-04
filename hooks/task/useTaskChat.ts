@@ -153,7 +153,20 @@ const useTaskChat = () => {
 
     useEffect(() => {
         if(correctAnswersByTopic[currentTopicIndex] === 3) {
-            setCurrentTopicIndex(currentTopicIndex + 1);
+            if(currentTopicIndex < taskTopics.length - 1) { setCurrentTopicIndex(currentTopicIndex + 1); }
+            else {
+                setMessages([
+                    ...messages,
+                    {
+                        role: 'assistant',
+                        id: nanoid(),
+                        content:  JSON.stringify({
+                            tag: ResponseTags.PLAIN_TEXT,
+                            content: taskComplete(task)
+                        })
+                    }
+                ]);
+            }
         }
     }, [correctAnswersByTopic]);
 
@@ -177,29 +190,22 @@ const useTaskChat = () => {
 
     useEffect(() => {
         if(currentTopicIndex === 0) return;
-        if(currentTopicIndex === taskTopics.length - 1) {
-            setMessages([
-                ...messages,
-                {
-                    role: 'assistant',
-                    id: nanoid(),
-                    content:  JSON.stringify({
-                        tag: ResponseTags.PLAIN_TEXT,
-                        content: taskComplete(task)
-                    })
-                }
-            ]);
-        } else {
-            setMessages([
-                ...messages,
-                {
-                    role: 'system',
-                    id: nanoid(),
-                    content: topicSystemMessage(task, taskTopics[currentTopicIndex])
-                }
-            ]);
-            setCorrectAnswersByTopic([...correctAnswersByTopic, 0]);
-        }
+        setMessages([
+            ...messages,
+            {
+                role: 'assistant',
+                id: nanoid(),
+                content: JSON.stringify({
+                    tag: ResponseTags.NEXT_TOPIC,
+                    content: taskTopics[currentTopicIndex].name
+                })
+            },
+            {
+                role: 'system',
+                id: nanoid(),
+                content: topicSystemMessage(task, taskTopics[currentTopicIndex])
+            }
+        ]);
     }, [currentTopicIndex]);
 
     const scrollToBottom = () => {
@@ -215,6 +221,7 @@ const useTaskChat = () => {
     }, [messages])
 
     const promptWithCommand = async (command: Command<any>) => {
+        console.log(messages);
         if(command.promptType === CommandTypes.DONT_KNOW) {
             setCurrentQuestion(null);
             setPromptType(CommandTypes.REGULAR)

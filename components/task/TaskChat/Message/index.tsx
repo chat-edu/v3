@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Message as MessageInterface} from "ai";
 
-import {Box, Card, ColorMode, Flex, HStack, useColorMode} from "@chakra-ui/react";
+import {Card, ColorMode, Flex, HStack, useColorMode} from "@chakra-ui/react";
 import {transparentize} from "@chakra-ui/theme-tools";
 
 import {SlOptionsVertical} from "react-icons/sl";
@@ -29,7 +29,6 @@ import {
 import {Command} from "@/types/commands/Command";
 import DontKnow from "@/components/task/TaskChat/Message/DontKnow";
 import {AnswerStates} from "@/hooks/task/useTaskChat";
-import Decision from "@/components/task/TaskChat/Message/Decision";
 import MessageImage from "@/components/task/TaskChat/Message/MessageImage";
 
 interface Props {
@@ -179,6 +178,13 @@ const getMessageComponent = (
             return (
                 <DontKnow
                     dontKnow={content}
+                />
+            );
+        case ResponseTags.NEXT_TOPIC:
+            return (
+                <ActionPrompt
+                    title={content}
+                    icon={BsFillLightbulbFill}
                 />
             );
         case CommandTags.HINT:
