@@ -5,20 +5,17 @@ import {Box} from "@chakra-ui/react";
 import {ReactFlow} from "reactflow";
 
 import nodeTypes from "@/components/home/NotLoggedIn/LandingGraph/nodes/nodeTypes";
-import {landingNodeWidth} from "@/components/home/NotLoggedIn/LandingGraph/nodes/LandingNode";
-import {layoutTopLevel, layoutSecondBrain} from "@/components/home/NotLoggedIn/LandingGraph/layout";
-import {
-    secondBrainNodeHeight,
-    secondBrainNodeWidth
-} from "@/components/home/NotLoggedIn/LandingGraph/nodes/SecondBrainNode";
+import {layoutTopLevel, layoutUser} from "@/components/home/NotLoggedIn/LandingGraph/layout";
+import {secondBrainNodes, secondBrainEdges} from "@/components/home/NotLoggedIn/LandingGraph/data";
 
 import 'reactflow/dist/style.css';
+import {
+    graphHeight,
+    graphWidth,
+} from "@/components/home/NotLoggedIn/LandingGraph/nodes/consts";
 
-const secondBrainLayout = layoutSecondBrain();
 const topLevelLayout = layoutTopLevel();
-
-const graphWidth = secondBrainNodeWidth + landingNodeWidth + 50;
-const graphHeight = secondBrainNodeHeight;
+const userLayout = layoutUser();
 
 const Graph = () => {
 
@@ -28,15 +25,15 @@ const Graph = () => {
             aspectRatio={`${graphWidth}/${graphHeight}`}
         >
             <ReactFlow
-                nodes={[...topLevelLayout.nodes, ...secondBrainLayout.nodes]}
-                edges={[...topLevelLayout.edges, ...secondBrainLayout.edges]}
+                nodes={[...topLevelLayout.nodes, ...secondBrainNodes, ...userLayout.nodes]}
+                edges={[...topLevelLayout.edges, ...secondBrainEdges, ...userLayout.edges]}
                 fitView
                 nodeTypes={nodeTypes}
-                zoomOnPinch={false}
-                zoomOnScroll={false}
-                zoomOnDoubleClick={false}
-                panOnScroll={false}
-                panOnDrag={false}
+                // zoomOnPinch={false}
+                // zoomOnScroll={false}
+                // zoomOnDoubleClick={false}
+                // panOnScroll={false}
+                // panOnDrag={false}
                 proOptions={{
                     hideAttribution: true,
                 }}

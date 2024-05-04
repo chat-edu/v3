@@ -1,4 +1,5 @@
 export enum LandingNodeTypes {
-    LandingNode = "LandingNode",
+    User = "User",
+    Component = "Component",
     SecondBrain = "SecondBrain",
 }

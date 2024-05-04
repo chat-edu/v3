@@ -5,29 +5,49 @@ import {Handle, NodeProps, Position} from "reactflow";
 import {Card, Icon, Text, Tooltip, VStack} from "@chakra-ui/react";
 
 import {LandingNode as LandingNodeType} from "@/types/landing/LandingNode";
+import {componentNodeHeight, componentNodeWidth} from "@/components/home/NotLoggedIn/LandingGraph/nodes/consts";
 
-export const landingNodeHeight = 175;
-export const landingNodeWidth = 250;
+const getTargetPosition = (id: string) => {
+    switch (id) {
+        case 'graph':
+            return Position.Right;
+        case 'comprehension':
+            return Position.Top;
+        case 'agent':
+            return Position.Left;
+        case 'profile':
+            return Position.Bottom;
+        default:
+            return Position.Bottom;
+    }
+}
 
-const LandingNode: ComponentType<NodeProps<LandingNodeType>> = ({ data, id }) => {
+const getSourcePosition = (id: string) => {
+    switch (id) {
+        case 'graph':
+            return Position.Top;
+        case 'comprehension':
+            return Position.Left;
+        case 'agent':
+            return Position.Bottom;
+        case 'profile':
+            return Position.Right;
+        default:
+            return Position.Top;
+    }
+}
+
+const ComponentNode: ComponentType<NodeProps<LandingNodeType>> = ({ data, id }) => {
     return (
         <>
-            {
-                id !== 'files' && id !== 'graph' && (
-                    <Handle
-                        type={"target"}
-                        position={Position.Left}
-                    />
-                )
-            }
-            {
-                id !== 'comprehension' && (
-                    <Handle
-                        type={"source"}
-                        position={Position.Right}
-                    />
-                )
-            }
+            <Handle
+                type={"target"}
+                position={getTargetPosition(id)}
+            />
+            <Handle
+                type={"source"}
+                position={getSourcePosition(id)}
+            />
             <Tooltip
                 label={data.description}
                 aria-label={data.description}
@@ -40,8 +60,8 @@ const LandingNode: ComponentType<NodeProps<LandingNodeType>> = ({ data, id }) =>
                         shadow: 'md'
                     }}
                     borderWidth={4}
-                    h={`${landingNodeHeight}px`}
-                    w={`${landingNodeWidth}px`}
+                    h={`${componentNodeHeight}px`}
+                    w={`${componentNodeWidth}px`}
                     p={0}
                     px={2}
                     justifyContent={'center'}
@@ -78,4 +98,4 @@ const LandingNode: ComponentType<NodeProps<LandingNodeType>> = ({ data, id }) =>
     );
 };
 
-export default LandingNode;
+export default ComponentNode;

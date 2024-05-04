@@ -8,7 +8,7 @@ import LandingGraph from "@/components/home/NotLoggedIn/LandingGraph";
 const NotLoggedIn = () => {
     return (
         <Container
-            maxW={'6xl'}
+            maxW={'4xl'}
             w={'100%'}
             h={'100%'}
             py={8}

@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Box, Flex} from "@chakra-ui/react";
 
-import Navbar, {mobileNavbarHeight, navbarHeight} from "@/components/layout/navbar";
+import Navbar, {navbarHeight} from "@/components/layout/navbar";
 
 import useViewportDimensions from "@/hooks/utilities/useViewportDimensions";
 import useAuth from "@/hooks/useAuth";
@@ -30,8 +30,9 @@ const Layout: React.FC<Props> = ({ children, authGate }) => {
                 direction={'column'}
                 gap={4}
                 w={'100%'}
-                h={`${height - mobileNavbarHeight}px`}
+                h={`${height - navbarHeight}px`}
                 position={'relative'}
+                overflow={'auto'}
             >
                 {
                     authGate ? (
