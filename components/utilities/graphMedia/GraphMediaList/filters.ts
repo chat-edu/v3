@@ -1,4 +1,4 @@
-import {FaImage, FaVideo} from "react-icons/fa6";
+import {FaImage, FaMarkdown, FaVideo} from "react-icons/fa6";
 import {FiFile} from "react-icons/fi";
 
 import {GraphMediaTypes} from "@/db/types/GraphMediaRow";
@@ -24,6 +24,11 @@ const filters: GraphMediaFilter[] = [
         value: GraphMediaTypes.PDF,
         icon: FiFile
     },
+    {
+        text: "Markdown",
+        value: GraphMediaTypes.Markdown,
+        icon: FaMarkdown
+    }
 ]
 
 export default filters;

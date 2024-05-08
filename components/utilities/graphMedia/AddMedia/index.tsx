@@ -2,7 +2,7 @@ import React from 'react';
 
 import {HStack} from "@chakra-ui/react";
 
-import {FaImage, FaVideo} from "react-icons/fa6";
+import {FaImage, FaMarkdown, FaVideo} from "react-icons/fa6";
 import {FiFile} from "react-icons/fi";
 
 import MediaInput from "@/components/utilities/graphMedia/AddMedia/MediaInput";
@@ -35,6 +35,13 @@ const AddMedia: React.FC<Props> = ({ graphId }) => {
                 text={'Upload PDF'}
                 icon={FiFile}
                 mediaType={GraphMediaTypes.PDF}
+            />
+            <MediaInput
+                graphId={graphId}
+                accept={'text/markdown'}
+                text={'Upload Markdown'}
+                icon={FaMarkdown}
+                mediaType={GraphMediaTypes.Markdown}
             />
             <MediaInput
                 graphId={graphId}

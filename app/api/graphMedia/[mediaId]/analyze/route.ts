@@ -20,6 +20,7 @@ import {TopicRow} from "@/db/types/TopicRow";
 import {TopicEdgeRow} from "@/db/types/TopicEdgeRow";
 import {MediaIdParams} from "@/app/api/graphMedia/[mediaId]/MediaIdParams";
 import {addGraphUpdate} from "@/db/services/graphUpdates";
+import {planUpdatesFromMarkdownPrompt, updatesAsJSONFromMarkdownPrompt} from "@/llm/prompts/graphs/updateWithMarkdown";
 
 export const maxDuration = 300;
 
@@ -45,6 +46,9 @@ export const POST = async (req: Request, { params }: { params: MediaIdParams}) =
             break;
         case GraphMediaTypes.Video:
             graphUpdate = await analyzeVideo(graph, topics, edges, graphMediaRow);
+            break;
+        case GraphMediaTypes.Markdown:
+            graphUpdate = await analyzeMarkdown(graph, topics, edges, graphMediaRow);
             break;
         default:
             break;
@@ -100,4 +104,13 @@ const analyzeVideo = async (graph: GraphRow, topics: TopicRow[], edges: TopicEdg
     const plan = await generate(planUpdatesFromVideoPrompt(graph, topics, edges, transcript));
     if(!plan) return null;
     return generateJson<GraphUpdate>(updatesAsJSONFromVideoPrompt(plan, graph, topics, edges, transcript));
+}
+
+const analyzeMarkdown = async (graph: GraphRow, topics: TopicRow[], edges: TopicEdgeRow[], media: GraphMediaRow) => {
+    const response = await fetch(media.media_url);
+    if(!response.body) return null;
+    const markdown = await response.text();
+    const plan = await generate(planUpdatesFromMarkdownPrompt(graph, topics, edges, markdown));
+    if(!plan) return null;
+    return generateJson<GraphUpdate>(updatesAsJSONFromMarkdownPrompt(plan, graph, topics, edges, markdown));
 }

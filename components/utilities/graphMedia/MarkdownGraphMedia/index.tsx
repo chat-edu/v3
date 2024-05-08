@@ -2,7 +2,7 @@ import React from 'react';
 
 import GraphMediaBase from "@/components/utilities/graphMedia/GraphMediaBase";
 import AnalyzeButton from "@/components/utilities/graphMedia/AnalyzeButton";
-import ImageMediaModalContent from "@/components/utilities/graphMedia/ImageGraphMedia/ImageMediaModalContent";
+import MarkdownMediaModalContent from "@/components/utilities/graphMedia/MarkdownGraphMedia/MarkdownMediaModalContent";
 
 import {GraphMedia} from "@/types/graph/GraphMedia";
 
@@ -20,8 +20,8 @@ const ImageGraphMedia: React.FC<Props> = ({ graphMedia }) => {
                 />
             }
             modalContent={
-                <ImageMediaModalContent
-                    graphMedia={graphMedia}
+                <MarkdownMediaModalContent
+                    mediaUrl={graphMedia.mediaUrl}
                 />
             }
         />

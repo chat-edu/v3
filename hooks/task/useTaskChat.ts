@@ -221,7 +221,6 @@ const useTaskChat = () => {
     }, [messages])
 
     const promptWithCommand = async (command: Command<any>) => {
-        console.log(messages);
         if(command.promptType === CommandTypes.DONT_KNOW) {
             setCurrentQuestion(null);
             setPromptType(CommandTypes.REGULAR)

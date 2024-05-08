@@ -68,7 +68,7 @@ export const generateContent = async (topicId: TopicRow["id"]) =>
         method: "POST",
     })
         .then((res) => res.json())
-        .then((data: {generatedContent: string}) => data.generatedContent as string)
+        .then((content) => content as string)
         .catch(() => "");
 
 export const getLastThreeQuestions = async (userId: User["id"], topicId: TopicRow["id"]) =>

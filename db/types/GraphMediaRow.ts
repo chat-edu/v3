@@ -16,4 +16,5 @@ export enum GraphMediaTypes {
     Image = "image",
     Video = "video",
     PDF = "pdf",
+    Markdown = "markdown",
 }

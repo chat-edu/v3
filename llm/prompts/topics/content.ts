@@ -14,12 +14,6 @@ export const contentPrompt = (topicRow: TopicRow, incomingTopics: TopicRow[]) =>
     }
 
     Provide a response in Markdown format.
-  
-    The response should be in the following JSON format:
-      
-     {
-        generatedContent: <string>
-     }
      
      Use escape characters where necessary to ensure the JSON is valid and can be parsed.
 `

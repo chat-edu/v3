@@ -112,4 +112,10 @@ CREATE TABLE MultipleChoiceSubmissions (
 );
 
 -- get all question submissions for a user
-SELECT * FROM FreeResponseSubmissions;
+SELECT * FROM Tasks;
+
+-- delete the task with id 72
+DELETE FROM Tasks WHERE id = 72;
+
+-- set the completed field on the task with id 73 to false
+UPDATE Tasks SET completed = false WHERE id = 73;

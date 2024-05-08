@@ -1,6 +1,6 @@
 'use client';
 
-import React, {RefObject} from 'react';
+import { forwardRef } from 'react';
 
 import {
     MDXEditor,
@@ -17,7 +17,8 @@ import {
     imagePlugin,
     linkDialogPlugin,
     tablePlugin,
-    thematicBreakPlugin, MDXEditorMethods,
+    thematicBreakPlugin,
+    MDXEditorMethods,
 } from '@mdxeditor/editor';
 import '@mdxeditor/editor/style.css';
 
@@ -26,11 +27,9 @@ import "@/components/utilities/editor/editorContent.css";
 interface Props {
     markdown: string;
     setMarkdown: (markdown: string) => void;
-    ref: RefObject<MDXEditorMethods>,
-
 }
 
-const Editor: React.FC<Props> = ({ markdown, ref, setMarkdown }) => {
+const Editor = forwardRef<MDXEditorMethods, Props>(({ markdown, setMarkdown }, ref) => {
 
     return (
         <MDXEditor
@@ -56,6 +55,8 @@ const Editor: React.FC<Props> = ({ markdown, ref, setMarkdown }) => {
             placeholder={'Start writing or generate content...'}
         />
     )
-}
+})
+
+Editor.displayName = 'Editor';
 
 export default Editor

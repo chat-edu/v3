@@ -8,7 +8,6 @@ import markdownTheme from "@/theme/markdownTheme";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 
 import 'katex/dist/katex.min.css';
 
@@ -28,8 +27,6 @@ const Markdown: React.FC<Props> = ({ children }) => {
             rehypePlugins={[
                 // @ts-ignore
                 rehypeKatex,
-                // @ts-ignore
-                rehypeRaw
             ]}
             skipHtml={false}
         >

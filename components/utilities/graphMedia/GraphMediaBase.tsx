@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 import {FiFile} from "react-icons/fi";
-import {FaDownload, FaImage, FaVideo} from "react-icons/fa6";
+import {FaDownload, FaImage, FaMarkdown, FaVideo} from "react-icons/fa6";
 
 import Link from "next/link";
 
@@ -108,7 +108,9 @@ const GraphMediaBase: React.FC<Props> = ({ graphMedia, analyzeButton, modalConte
                                 ? FiFile
                                 : graphMedia.mediaType === GraphMediaTypes.Video
                                     ? FaVideo
-                                    : FaImage
+                                    : graphMedia.mediaType === GraphMediaTypes.Image
+                                        ? FaImage
+                                        : FaMarkdown
                         }
                     />
                     <VStack
