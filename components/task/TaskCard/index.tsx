@@ -5,6 +5,7 @@ import {Card, HStack, Text, VStack} from "@chakra-ui/react";
 import Link from "next/link";
 import TaskSubject from "@/components/task/TaskCard/TaskSubject";
 import {CheckIcon} from "@chakra-ui/icons";
+import TaskProgress from "@/components/task/TaskCard/TaskProgress";
 
 interface Props {
     task: Task,
@@ -42,7 +43,8 @@ const TaskCard: React.FC<Props> = ({ task, showSubject }) => {
                     }
                     <VStack
                         alignItems={'flex-start'}
-                        spacing={0}
+                        spacing={1}
+                        w={'100%'}
                     >
                         {
                             showSubject && (
@@ -54,6 +56,11 @@ const TaskCard: React.FC<Props> = ({ task, showSubject }) => {
                         >
                             {task.text}
                         </Text>
+                        {
+                            !task.completed && (
+                                <TaskProgress taskId={task.id} />
+                            )
+                        }
                     </VStack>
                 </HStack>
             </Card>
