@@ -34,7 +34,9 @@ You should also consider how the new information fits into the existing graph st
 
 An edge is directed and indicates that the source topic is a prerequisite for the target topic. There must not be any circular dependencies in the graph.
 
-The root node of the graph is ${graph.name} and should not have any incoming edges.`
+The root node of the graph is ${graph.name} and should not have any incoming edges. Every other topic should have at least one incoming edge and there should be a path from the root node to every other node in the graph.
+
+Write a plan including all of the new topics, updated topics, and new edges that should be added to the graph.`
 
 export const baseJSONUpdate = (
     plan: string,
@@ -63,7 +65,7 @@ ${updateCause}
 
 You must now produce a JSON representation of the updates to be made to the graph based on the new information.
 
-New topics MUST already be present in the graph. EVERY new topic must also have an edge connecting it to an existing topic or another new one.
+New topics MUST NOT already be present in the graph. EVERY new topic must also have an edge connecting it to an existing topic or another new one.
 
 New topics should include as much information as possible to fully describe the concept.
 
@@ -73,7 +75,9 @@ Topic updates MUST BE based on an existing topic.
 
 New edges can be between two existing topics, between an existing topic and a new topic, or between two new topics.
 
-All content should be in markdown format and should break the concepts down into smaller, more digestible pieces.
+The root node of the graph is ${graph.name} and should not have any incoming edges. Every other topic should have at least one incoming edge and there should be a path from the root node to every other node in the graph.
+
+All content should be in markdown format.
 
 Your JSON response must follow this format:
 

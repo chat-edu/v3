@@ -6,6 +6,8 @@ import {generateTaskSummary} from "@/llm/prompts/tasks/createTaskSummary";
 import {findFreeResponseQuestionsByTaskId, findMultipleChoiceQuestionsByTaskId} from "@/db/services/questions";
 import {addTaskSummary} from "@/db/services/taskSummaries";
 
+export const maxDuration = 300;
+
 export const POST = async (req: Request, { params }: { params: TaskIdParams }) => {
     const success = await updateTaskCompleted(params.taskId, true);
 
