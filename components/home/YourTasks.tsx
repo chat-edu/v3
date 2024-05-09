@@ -7,6 +7,7 @@ import TaskCard from "@/components/task/TaskCard";
 
 import useUserTasks from "@/hooks/queries/tasks/useUserTasks";
 import useAuth from "@/hooks/useAuth";
+import CreateTask from "@/components/home/CreateTask";
 
 
 const YourTasks = () => {
@@ -24,6 +25,7 @@ const YourTasks = () => {
             <Heading>
                 Your Tasks
             </Heading>
+            <CreateTask />
             <Loading
                 loading={isLoading}
                 w={'full'}

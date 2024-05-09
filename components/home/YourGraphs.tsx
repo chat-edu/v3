@@ -19,9 +19,21 @@ const YourGraphs = () => {
             alignItems={'flex-start'}
             w={'100%'}
         >
-            <Heading>
-                Your Subjects
-            </Heading>
+            <VStack
+                alignItems={'flex-start'}
+                w={'100%'}
+                spacing={0}
+            >
+                <Heading>
+                    Your Subjects
+                </Heading>
+                <Text
+                    fontSize={'md'}
+                    opacity={0.7}
+                >
+                    Subjects create knowledge graphs that your learning copilot can use to help you achieve your learning objectives.
+                </Text>
+            </VStack>
             <CreateGraph />
             <Loading loading={isLoading}>
                 {

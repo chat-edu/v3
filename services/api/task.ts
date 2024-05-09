@@ -1,6 +1,7 @@
 import {TaskRow, TaskRowInput} from "@/db/types/TaskRow";
 import {emitSubjectTasksChangedEvent} from "@/events/subjectTasksChanged";
 import {emitTaskChangedEvent} from "@/events/taskChanged";
+import {emitUserTasksChangedEvent} from "@/events/userTasksChanged";
 
 export const createTask = async (taskInput: TaskRowInput) =>
     fetch("/api/tasks", {
@@ -13,7 +14,8 @@ export const createTask = async (taskInput: TaskRowInput) =>
     .then(res => res.json())
     .then(data => {
         if (data) {
-            emitSubjectTasksChangedEvent(data.task.graph_id);
+            emitSubjectTasksChangedEvent(taskInput.graph_id);
+            emitUserTasksChangedEvent(taskInput.creator_id);
             return data as TaskRow;
         }
         return null;

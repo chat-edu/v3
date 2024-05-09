@@ -23,7 +23,7 @@ const TaskGraph: React.FC = () => {
 
     return (
         <Flex
-            w={'250px'}
+            w={'300px'}
             h={'100%'}
             borderRightWidth={2}
             flexDirection={'column'}
@@ -42,10 +42,6 @@ const TaskGraph: React.FC = () => {
                 edgesFocusable={false}
                 nodesDraggable={false}
                 nodesConnectable={false}
-                zoomOnScroll={false}
-                panOnScroll={false}
-                panOnDrag={false}
-                zoomOnDoubleClick={false}
                 fitView
                 nodeTypes={nodeTypes}
                 proOptions={{
